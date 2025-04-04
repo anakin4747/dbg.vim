@@ -186,10 +186,14 @@ function! GetAction(cfg, args)
         return #{action: "launch", program_path: prog}
     endif
 
-    if exists("args[1]") && filereadable(args[1])
-        let core = args[1]
-    else
-        let core = get(a:cfg, "coredump_path", "")
+    let ip = get(args, 0, get(a:cfg, "ip", ""))
+    let port = str2nr(get(args, 1, get(a:cfg, "port", -1)))
+
+    if ip =~ ip_regex
+        if port < 65535 && port > 0
+            return #{action: "attach-ip", ip: ip, port: port}
+        endif
+        return #{action: "attach-ip", ip: ip}
     endif
 
     let max_pid = str2nr(readfile('/proc/sys/kernel/pid_max')[0])
@@ -198,16 +202,6 @@ function! GetAction(cfg, args)
 
     if pid < max_pid && pid > 0
         return #{action: "attach-pid", pid: pid}
-    endif
-
-    let ip = get(a:cfg, "ip", "")
-    let port = get(a:cfg, "port", -1)
-
-    if ip =~ ip_regex
-        if port < 65535 && port > 0
-            return #{action: "attach-ip", ip: ip, port: port}
-        endif
-        return #{action: "attach-ip", ip: ip}
     endif
 
 endfunction

@@ -99,20 +99,31 @@ function! TestPidArgNoConfig()
 endfunction
 
 function! TestIpArgNoConfig()
-    let expected = #{action: "attach-ip", }
+    let expected = #{action: "attach-ip", ip: "192.168.30.23"}
     let actual = GetAction({}, "192.168.30.23")
     call assert_equal(expected, actual)
 endfunction
 
-"function! TestIpPortArgNoConfig()
-"    let expected = #{action: "attach-ip", }
-"    let actual = GetAction({}, "192.168.30.23 31892")
-"    call assert_equal(expected, actual)
-"endfunction
-"
-"function! TestProgArgBeatsConfig()
-"    let expected = #{action: "launch", program_path: "/path/to/exe"}
-"    let actual = GetAction(#{program_path: "/foo/bar"}, "/path/to/exe")
-"    call assert_equal(expected, actual)
-"endfunction
-"
+function! TestIpPortArgNoConfig()
+    let expected = #{
+        \ action: "attach-ip",
+        \ ip: "192.168.30.23",
+        \ port: 31892,
+        \}
+    let actual = GetAction({}, "192.168.30.23 31892")
+    call assert_equal(expected, actual)
+endfunction
+
+function! TestProgArgBeatsConfig()
+    let expected = #{action: "launch", program_path: "/bin/bash"}
+    let actual = GetAction(#{program_path: "/usr/bin/zsh"}, "/bin/bash")
+    call assert_equal(expected, actual)
+endfunction
+
+function! TestProgArgBeatsConfig()
+    let expected = #{action: "launch", program_path: "/bin/bash"}
+    let actual = GetAction(#{program_path: "/usr/bin/zsh"}, "/bin/bash")
+    call assert_equal(expected, actual)
+endfunction
+
+" TODO: Repeat the above test for the other situation
