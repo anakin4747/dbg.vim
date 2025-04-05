@@ -204,7 +204,7 @@ function! s:TryAttachProc(args, cfg)
     let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
 
     if pid < max_pid && pid > 0
-        return #{action: "attach-pid", pid: pid}
+        return #{action: "attach-pid", pid: pid, proc: proc}
     endif
 endf
 
