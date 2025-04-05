@@ -42,22 +42,22 @@ function! DbgRunTests()
             let v:errmsg = ""
             let failcount += 1
         else
-            echohl Title
-            echomsg $"PASS: {test}"
-            echohl None
+            "echohl Title
+            "echomsg $"PASS: {test}"
+            "echohl None
             let passcount += 1
         endif
     endfor
 
-    if passcount != 0
-        echohl Title
-        echomsg $"{passcount} TESTS PASSED"
-        echohl None
-    endif
-
     if failcount != 0
         echohl WarningMsg
         echomsg $"{failcount} TESTS FAILED"
+        echohl None
+    endif
+
+    if passcount != 0
+        echohl Title
+        echomsg $"{passcount} TESTS PASSED"
         echohl None
     endif
 
