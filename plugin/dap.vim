@@ -158,46 +158,69 @@ function s:InitDebugServer(s)
         echoerr 'Failed to open the program terminal window'
         finish
     endif
-endfunction
+endf
+
+function! s:TryLaunch(args, cfg)
+    let prog = get(a:args, 0, get(a:cfg, "program_path", ""))
+
+    " Cannot use executable() since it searches $PATH
+    if getfperm(prog) =~ '..x......'
+        let core = get(a:args, 1, get(a:cfg, "coredump_path", ""))
+        if filereadable(core)
+            return #{action: "launch", program_path: prog, coredump_path: core}
+        endif
+        return #{action: "launch", program_path: prog}
+    endif
+endf
+
+function! s:TryAttachIP(args, cfg)
+    let ip = get(a:args, 0, get(a:cfg, "ip", ""))
+
+    if ip =~ '\v^(\d{1,3}\.){3}\d{1,3}$'
+        let port = str2nr(get(a:args, 1, get(a:cfg, "port", -1)))
+        if port < 65535 && port > 0
+            return #{action: "attach-ip", ip: ip, port: port}
+        endif
+        return #{action: "attach-ip", ip: ip}
+    endif
+endf
+
+function! s:TryAttachPid(args, cfg)
+    let max_pid = str2nr(readfile('/proc/sys/kernel/pid_max')[0])
+
+    let pid = str2nr(get(a:args, 0, get(a:cfg, "pid", "-1")))
+
+    if pid < max_pid && pid > 0
+        return #{action: "attach-pid", pid: pid}
+    endif
+endf
+
+function! s:TryAttachProc(args, cfg)
+    let proc = get(a:args, 0, get(a:cfg, "proc", ""))
+
+    let pid = ("pgrep ".proc)->system()->split()[0]->str2nr()
+
+    let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
+
+    if pid < max_pid && pid > 0
+        return #{action: "attach-pid", pid: pid}
+    endif
+endf
 
 function! GetAction(cfg, args = "")
-    let ip_regex = '\v^(\d{1,3}\.){3}\d{1,3}$'
-
     if empty(a:cfg) && empty(a:args)
         return #{action: "prompt"}
     endif
 
     let args = split(a:args)
 
-    let prog = get(args, 0, get(a:cfg, "program_path", ""))
-    let core = get(args, 1, get(a:cfg, "coredump_path", ""))
-
-    if executable(prog)
-        if filereadable(core)
-            return #{action: "launch", program_path: prog, coredump_path: core}
+    for action_to_try in ['s:TryLaunch', 's:TryAttachIP', 's:TryAttachPid', 's:TryAttachProc']
+        let action = call(action_to_try, [args, a:cfg])
+        if !empty(action)
+            return action
         endif
-        return #{action: "launch", program_path: prog}
-    endif
-
-    let ip = get(args, 0, get(a:cfg, "ip", ""))
-    let port = str2nr(get(args, 1, get(a:cfg, "port", -1)))
-
-    if ip =~ ip_regex
-        if port < 65535 && port > 0
-            return #{action: "attach-ip", ip: ip, port: port}
-        endif
-        return #{action: "attach-ip", ip: ip}
-    endif
-
-    let max_pid = str2nr(readfile('/proc/sys/kernel/pid_max')[0])
-
-    let pid = str2nr(get(args, 0, get(a:cfg, "pid", "-1")))
-
-    if pid < max_pid && pid > 0
-        return #{action: "attach-pid", pid: pid}
-    endif
-
-endfunction
+    endfor
+endf
 
 " TODO: smarter tab completion
 command -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
@@ -205,5 +228,5 @@ command -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
 function! s:DbgStart(args = "")
     let action = GetAction({}, a:args)
     echo action
-endfunction
+endf
 
