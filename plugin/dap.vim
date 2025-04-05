@@ -186,7 +186,7 @@ function! s:TryAttachIP(args, cfg)
 endf
 
 function! s:TryAttachPid(args, cfg)
-    let max_pid = str2nr(readfile('/proc/sys/kernel/pid_max')[0])
+    let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
 
     let pid = str2nr(get(a:args, 0, get(a:cfg, "pid", "-1")))
 
@@ -198,7 +198,8 @@ endf
 function! s:TryAttachProc(args, cfg)
     let proc = get(a:args, 0, get(a:cfg, "proc", ""))
 
-    let pid = ("pgrep ".proc)->system()->split()[0]->str2nr()
+    " Maybe we won't just want the first one in the future
+    let pid = $"pgrep {proc}"->system()->split()[0]->str2nr()
 
     let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
 
