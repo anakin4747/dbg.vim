@@ -160,14 +160,7 @@ function s:InitDebugServer(s)
     endif
 endfunction
 
-function s:StartDebug(s)
-    call InitDebugger(a:s)
-endfunction
-
-function! AddToHistory(s, args)
-endfunction
-
-function! GetAction(cfg, args)
+function! GetAction(cfg, args = "")
     let ip_regex = '\v^(\d{1,3}\.){3}\d{1,3}$'
 
     if empty(a:cfg) && empty(a:args)
@@ -204,5 +197,13 @@ function! GetAction(cfg, args)
         return #{action: "attach-pid", pid: pid}
     endif
 
+endfunction
+
+" TODO: smarter tab completion
+command -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
+
+function! s:DbgStart(args = "")
+    let action = GetAction({}, a:args)
+    echo action
 endfunction
 

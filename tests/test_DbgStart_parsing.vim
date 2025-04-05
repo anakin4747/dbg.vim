@@ -14,6 +14,8 @@ runtime dap.vim
 " So the prompt will ask you to fill in the necessary fields and choose the
 " action in the config
 "
+" Or just manage the prompting in another section
+"
 "
 " state: misconfigured
 "        V
@@ -82,6 +84,12 @@ function! TestProgArgNoConfig()
     call assert_equal(expected, actual)
 endfunction
 
+function! TestProgArgWithSpaceNoConfig()
+    let expected = #{action: "launch", program_path: "/bin/bash"}
+    let actual = GetAction({}, " /bin/bash ")
+    call assert_equal(expected, actual)
+endfunction
+
 function! TestProgCoreArgNoConfig()
     let expected = #{
         \ action: "launch",
@@ -126,4 +134,19 @@ function! TestProgArgBeatsConfig()
     call assert_equal(expected, actual)
 endfunction
 
+function! TestProgArgBeatsConfig()
+    let expected = #{action: "launch", program_path: "/bin/bash"}
+    let actual = GetAction(#{program_path: "/usr/bin/zsh"}, "/bin/bash")
+    call assert_equal(expected, actual)
+endfunction
+
 " TODO: Repeat the above test for the other situation
+"
+" What priority of things in the config should be
+"
+" Choose ip over pid
+"
+" if there is an ip
+" - choose the ip
+" - program_path is always useful
+" - ip and port
