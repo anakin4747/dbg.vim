@@ -12,7 +12,7 @@
 "   work for you
 " - a temporary buffer which contains variables that can be treated like folds
 "   - the scope of the variables can be chosen explicitly to be local, global,
-"   or both
+"     or both
 " - treesitter highlighting in the gdb terminal
 " - a way to show variables in the specific scope and be able to
 "   increase/decrease the depth of the scope
@@ -24,6 +24,7 @@
 " - maybe have a way to read .vscode/launch.json files
 " - cool to tell you if the application you are trying to debug does not have
 "   debug symbols
+" - external terminal support
 "
 " dap.vim - A Debug Adapter Protocol client the Vim way
 " Maintainer:   Anakin Childerhose
@@ -81,83 +82,27 @@
 " - Jump to the current line being debugged
 
 
-" DbgStart arg parsing logic
-"
-" If no args, look to last item in history, if no history, prompt for an
-" application to debug
-" - return action "prompt"
-"
-" If one argument is passed see if it is a number, if so treat it as a pid
-" - set pid and return action "attach-to-pid"
-"
-" If one arg and a path is provided
-" - set the "program" and return action "launch"
-
-
 "if exists('g:loaded_dap')
 "    finish
 "endif
 "let g:loaded_dap = 1
 
 
-"function! SetGlobalConfig()
-"lua << EOF
-"    package.loaded["dbg-cfg"] = nil -- Invalidate cache
-"    vim.api.nvim_set_var("dbg_cfg", require("dbg-cfg"))
-"EOF
-"endf
-"
-"let g:dbg_cfg = {}
-"echo g:dbg_cfg
-"call SetGlobalConfig()
-"echo g:dbg_cfg
-
-
-" TODO: Add runtime test to make sure all of these features are supported in
-" gdb
-"let g:gdb_args = "-quiet -iex set pagination off -iex set mi-async on"
-
 " repo local configs need to be stored in a file somewhere
 "
 " like have one file that stores the repos root dir in the first column and the
 " second column is just the config vimscript dict
 
-"function s:ValidateConfig(config) abort
-"    for [ft, ft_config] in items(a:config)
-"        let cmd = split(ft_config.cmd)[0]
-"        if !executable(cmd)
-"            echoerr $"dap.vim: ValidateConfig: bad config for '{ft}', '{cmd}' not executable."
-"        endif
-"    endfor
-"endf
-
-"call s:ValidateConfig(g:dap_config)
-
-"let repo_config = #{
-"    \ coredump_path: "",
-"    \ program_path: "",
-"    \ target: #{ ip: "", pid: -1, port: -1, },
-"    \}
-
-"let state = #{
-"    \ config: [g:dbg_cfg, repo_config],
-"    \ server: #{ pty_id: -1 },
-"    \ }
-
-"lua << EOF
-"    local var = vim.api.nvim_get_var("state")
-"    print(vim.inspect(var))
-"EOF
-
-function s:InitDebugServer(s)
-    let a:s.server.pty_id = termopen('tail -f /dev/null;#gdb program')
-    if a:s.server.pty_id == 0
-        echoerr 'invalid argument (or job table is full) while opening terminal window'
-        finish
-    elseif a:s.server.pty_id == -1
-        echoerr 'Failed to open the program terminal window'
-        finish
-    endif
+" TODO
+" Given the current file, I want to be able to get the configuration stored in
+" the internal storage for
+function! GetConfig(cfg_dir, file)
+    " Have the repo configs just be a list of all the previous settings
+    "
+    " They do not grow upon each other, they are independent
+    "
+    " Anytime it is started with new different args to the current repo config
+    " then a new one is added to the beginning of the config
 endf
 
 " Given the current file, get the remote of that repo
@@ -169,6 +114,7 @@ function! GetRemote(file)
         return ""
     endtry
 endf
+
 function! s:GetMaxPid()
     " This will break for non linux but idc
     return '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
