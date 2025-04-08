@@ -178,6 +178,16 @@ function! s:TryLaunch(args, cfg)
         return #{action: "launch", program_path: prog, coredump_path: core}
     endif
 
+    if !empty(get(a:args, 1, ""))
+        return #{action: "launch", program_path: prog, program_args: a:args[1:]}
+    endif
+
+    let cfg_args = get(a:cfg, "program_args", [])
+
+    if !empty(cfg_args)
+        return #{action: "launch", program_path: prog, program_args: cfg_args}
+    endif
+
     return #{action: "launch", program_path: prog}
 endf
 

@@ -15,6 +15,19 @@ function TestNoArgsWithProg()
     call assert_equal(expected, actual)
 endfunction
 
+function TestNoArgsWithProgArgs()
+    let expected = #{
+        \ action: "launch",
+        \ program_path: "/bin/bash",
+        \ program_args: ["-c", "ls"]
+        \}
+    let actual = GetAction(#{
+        \ program_path: "/bin/bash",
+        \ program_args: ["-c", "ls"]
+        \}, "")
+    call assert_equal(expected, actual)
+endfunction
+
 function TestNoArgsWithProgCore()
     let expected = #{
         \ action: "launch",
@@ -69,6 +82,16 @@ endfunction
 function TestProgArgNoConfig()
     let expected = #{action: "launch", program_path: "/bin/bash"}
     let actual = GetAction({}, "/bin/bash")
+    call assert_equal(expected, actual)
+endfunction
+
+function TestProgArgsNoConfig()
+    let expected = #{
+        \ action: "launch",
+        \ program_path: "/bin/bash",
+        \ program_args: ["-c", "ls"]
+        \}
+    let actual = GetAction({}, "/bin/bash -c ls")
     call assert_equal(expected, actual)
 endfunction
 
