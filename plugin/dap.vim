@@ -216,9 +216,11 @@ endf
 function! s:TryAttachProc(args, cfg)
     let proc = get(a:args, 0, get(a:cfg, "proc", ""))
 
-    " Maybe we won't just want the first one in the future
-    let pid = $"pgrep {proc}"->system()->split()[0]->str2nr()
-
+    try " Maybe we won't just want the first one in the future
+        let pid = $"pgrep {proc}"->system()->split()[0]->str2nr()
+    catch
+        return
+    endtry
 
     if pid < s:GetMaxPid() && pid > 0
         return #{action: "attach-pid", pid: pid, proc: proc}
