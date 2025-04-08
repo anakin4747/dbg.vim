@@ -4,7 +4,7 @@ runtime dap.vim
 " TODO: Maybe never store pid since they immediately become in valid
 
 function TestNoArgsNoConfig()
-    let expected = #{action: "prompt"}
+    let expected = ""
     let actual = GetAction({}, "")
     call assert_equal(expected, actual)
 endfunction

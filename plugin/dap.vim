@@ -184,7 +184,7 @@ endf
 
 function! GetAction(cfg, args = "")
     if empty(a:cfg) && empty(a:args)
-        return #{action: "prompt"}
+        return ""
     endif
 
     let args = split(a:args)
@@ -206,7 +206,7 @@ function! s:DbgStart(args = "")
 
     let action = GetAction({}, a:args)
 
-    if get(action, "action") == "prompt"
+    if empty(action)
         echohl WarningMsg
         echo $"No program setup to debug for remote: {remote}"
         echohl None
