@@ -106,6 +106,7 @@ function! GetConfig(cfg_dir, file)
 endf
 
 runtime actions.vim
+runtime cmd.vim
 runtime remote.vim
 
 " TODO: smarter tab completion
@@ -132,6 +133,15 @@ function! s:DbgStart(args = "")
         return
     endif
 
-    echo action
+    let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
+    if empty(cmd)
+        echoerr "Failed to build debgger command"
+        echo $"{action} gdb {g:default_gdb_args}"
+        return
+    endif
+
+    new
+    let id = termopen(cmd)
+
 endf
 
