@@ -160,6 +160,11 @@ function s:InitDebugServer(s)
     endif
 endf
 
+function! s:GetMaxPid()
+    " This will break for non linux but idc
+    return '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
+endf
+
 function! s:TryLaunch(args, cfg)
     let prog = get(a:args, 0, get(a:cfg, "program_path", ""))
 
@@ -186,11 +191,9 @@ function! s:TryAttachIP(args, cfg)
 endf
 
 function! s:TryAttachPid(args, cfg)
-    let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
-
     let pid = str2nr(get(a:args, 0, get(a:cfg, "pid", "-1")))
 
-    if pid < max_pid && pid > 0
+    if pid < s:GetMaxPid() && pid > 0
         return #{action: "attach-pid", pid: pid}
     endif
 endf
@@ -201,9 +204,8 @@ function! s:TryAttachProc(args, cfg)
     " Maybe we won't just want the first one in the future
     let pid = $"pgrep {proc}"->system()->split()[0]->str2nr()
 
-    let max_pid = '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
 
-    if pid < max_pid && pid > 0
+    if pid < s:GetMaxPid() && pid > 0
         return #{action: "attach-pid", pid: pid, proc: proc}
     endif
 endf
