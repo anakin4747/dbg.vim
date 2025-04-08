@@ -129,6 +129,14 @@ function! s:DbgStart(args = "")
     if empty(action)
         echohl WarningMsg
         echo $"No program setup to debug for remote: {remote}"
+        echohl Title
+        echo 'Try one of:'
+        echo ' :DbgStart /path/to/program'
+        echo ' :DbgStart <pid>'
+        echo ' :DbgStart <name of process>'
+        echo ' :DbgStart <ip> <port>'
+        echo 'Then:'
+        echo ' :DbgStart'
         echohl None
         return
     endif
