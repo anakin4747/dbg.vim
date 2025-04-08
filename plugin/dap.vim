@@ -160,6 +160,15 @@ function s:InitDebugServer(s)
     endif
 endf
 
+" Given the current file, get the remote of that repo
+function! GetRemote(file)
+    let dirname = fnamemodify(a:file, ":p:h")
+    try
+        return $"git -C {dirname} remote -v"->system()->split()[1]
+    catch
+        return ""
+    endtry
+endf
 function! s:GetMaxPid()
     " This will break for non linux but idc
     return '/proc/sys/kernel/pid_max'->readfile()[0]->str2nr()
