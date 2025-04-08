@@ -198,10 +198,21 @@ function! GetAction(cfg, args = "")
 endf
 
 " TODO: smarter tab completion
-command -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
+command! -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
 
 function! s:DbgStart(args = "")
+
+    let remote = GetRemote(expand("%"))
+
     let action = GetAction({}, a:args)
+
+    if get(action, "action") == "prompt"
+        echohl WarningMsg
+        echo $"No program setup to debug for remote: {remote}"
+        echohl None
+        return
+    endif
+
     echo action
 endf
 
