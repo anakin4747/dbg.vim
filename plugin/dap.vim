@@ -100,49 +100,49 @@
 "let g:loaded_dap = 1
 
 
-function! SetGlobalConfig()
-lua << EOF
-    package.loaded["dbg-cfg"] = nil -- Invalidate cache
-    vim.api.nvim_set_var("dbg_cfg", require("dbg-cfg"))
-EOF
-endfunction
-
-let g:dbg_cfg = {}
-echo g:dbg_cfg
-call SetGlobalConfig()
-echo g:dbg_cfg
+"function! SetGlobalConfig()
+"lua << EOF
+"    package.loaded["dbg-cfg"] = nil -- Invalidate cache
+"    vim.api.nvim_set_var("dbg_cfg", require("dbg-cfg"))
+"EOF
+"endf
+"
+"let g:dbg_cfg = {}
+"echo g:dbg_cfg
+"call SetGlobalConfig()
+"echo g:dbg_cfg
 
 
 " TODO: Add runtime test to make sure all of these features are supported in
 " gdb
-let g:gdb_args = "-quiet -iex set pagination off -iex set mi-async on"
+"let g:gdb_args = "-quiet -iex set pagination off -iex set mi-async on"
 
 " repo local configs need to be stored in a file somewhere
 "
 " like have one file that stores the repos root dir in the first column and the
 " second column is just the config vimscript dict
 
-function s:ValidateConfig(config) abort
-    for [ft, ft_config] in items(a:config)
-        let cmd = split(ft_config.cmd)[0]
-        if !executable(cmd)
-            echoerr $"dap.vim: ValidateConfig: bad config for '{ft}', '{cmd}' not executable."
-        endif
-    endfor
-endfunction
+"function s:ValidateConfig(config) abort
+"    for [ft, ft_config] in items(a:config)
+"        let cmd = split(ft_config.cmd)[0]
+"        if !executable(cmd)
+"            echoerr $"dap.vim: ValidateConfig: bad config for '{ft}', '{cmd}' not executable."
+"        endif
+"    endfor
+"endf
 
 "call s:ValidateConfig(g:dap_config)
 
-let repo_config = #{
-    \ coredump_path: "",
-    \ program_path: "",
-    \ target: #{ ip: "", pid: -1, port: -1, },
-    \}
+"let repo_config = #{
+"    \ coredump_path: "",
+"    \ program_path: "",
+"    \ target: #{ ip: "", pid: -1, port: -1, },
+"    \}
 
-let state = #{
-    \ config: [g:dbg_cfg, repo_config],
-    \ server: #{ pty_id: -1 },
-    \ }
+"let state = #{
+"    \ config: [g:dbg_cfg, repo_config],
+"    \ server: #{ pty_id: -1 },
+"    \ }
 
 "lua << EOF
 "    local var = vim.api.nvim_get_var("state")
