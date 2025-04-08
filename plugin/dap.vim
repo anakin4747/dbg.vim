@@ -169,25 +169,30 @@ function! s:TryLaunch(args, cfg)
     let prog = get(a:args, 0, get(a:cfg, "program_path", ""))
 
     " Cannot use executable() since it searches $PATH
-    if getfperm(prog) =~ '..x......'
-        let core = get(a:args, 1, get(a:cfg, "coredump_path", ""))
-        if filereadable(core)
-            return #{action: "launch", program_path: prog, coredump_path: core}
-        endif
-        return #{action: "launch", program_path: prog}
+    if getfperm(prog) !~ '..x......'
+        return
     endif
+
+    let core = get(a:args, 1, get(a:cfg, "coredump_path", ""))
+    if filereadable(core)
+        return #{action: "launch", program_path: prog, coredump_path: core}
+    endif
+
+    return #{action: "launch", program_path: prog}
 endf
 
 function! s:TryAttachIP(args, cfg)
     let ip = get(a:args, 0, get(a:cfg, "ip", ""))
 
-    if ip =~ '\v^(\d{1,3}\.){3}\d{1,3}$'
-        let port = str2nr(get(a:args, 1, get(a:cfg, "port", -1)))
-        if port < 65535 && port > 0
-            return #{action: "attach-ip", ip: ip, port: port}
-        endif
-        return #{action: "attach-ip", ip: ip}
+    if ip !~ '\v^(\d{1,3}\.){3}\d{1,3}$'
+        return
     endif
+
+    let port = str2nr(get(a:args, 1, get(a:cfg, "port", -1)))
+    if port < 65535 && port > 0
+        return #{action: "attach-ip", ip: ip, port: port}
+    endif
+    return #{action: "attach-ip", ip: ip}
 endf
 
 function! s:TryAttachPid(args, cfg)
