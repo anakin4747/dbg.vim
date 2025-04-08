@@ -1,0 +1,4 @@
+
+have a config already made for neovim, with the gdb option
+"set follow-fork-mode child"
+need to have some default configs to source
