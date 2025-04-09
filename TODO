@@ -3,6 +3,8 @@ have a config already made for neovim, with the gdb option
 "set follow-fork-mode child"
 need to have some default configs to source
 
+" TODO: Maybe never store pid since they immediately become in valid
+
 
 " Describe the debugging experience you want.
 "

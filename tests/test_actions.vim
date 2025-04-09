@@ -1,8 +1,6 @@
 
 runtime dbg.vim
 
-" TODO: Maybe never store pid since they immediately become in valid
-
 function TestNoArgsNoConfig()
     let expected = ""
     let actual = GetAction({}, "")
