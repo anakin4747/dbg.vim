@@ -26,7 +26,7 @@
 "   debug symbols
 " - external terminal support
 "
-" dap.vim - A Debug Adapter Protocol client the Vim way
+" dbg.vim - A Debug Adapter Protocol client the Vim way
 " Maintainer:   Anakin Childerhose
 " Version:      0.1
 
@@ -82,10 +82,10 @@
 " - Jump to the current line being debugged
 
 
-"if exists('g:loaded_dap')
+"if exists('g:loaded_dbg')
 "    finish
 "endif
-"let g:loaded_dap = 1
+"let g:loaded_dbg = 1
 
 
 " repo local configs need to be stored in a file somewhere
@@ -110,9 +110,9 @@ runtime cmd.vim
 runtime remote.vim
 
 " TODO: smarter tab completion
-command! -nargs=* -complete=file DbgStart call s:DbgStart("<args>")
+command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 
-function! s:DbgStart(args = "")
+function! s:Dbg(args = "")
 
     let remote = GetRemote(expand("%"))
 

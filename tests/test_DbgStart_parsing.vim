@@ -1,5 +1,5 @@
 
-runtime dap.vim
+runtime dbg.vim
 
 " TODO: Maybe never store pid since they immediately become in valid
 
