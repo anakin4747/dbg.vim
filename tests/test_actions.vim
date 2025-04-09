@@ -1,6 +1,4 @@
 
-runtime dbg.vim
-
 function TestNoArgsNoConfig()
     let expected = ""
     let actual = GetAction({}, "")
