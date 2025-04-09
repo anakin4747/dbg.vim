@@ -4,7 +4,6 @@
 " Copyright: Vim license applies, see ":help license"
 " Version:      0.1
 
-
 "if exists('g:loaded_dbg')
 "    finish
 "endif
@@ -24,12 +23,12 @@ function! s:Dbg(args = "")
         echo $"No program setup to debug for remote: {remote}"
         echohl Title
         echo 'Try one of:'
-        echo ' :DbgStart /path/to/program'
-        echo ' :DbgStart <pid>'
-        echo ' :DbgStart <name of process>'
-        echo ' :DbgStart <ip> <port>'
+        echo ' :Dbg /path/to/program'
+        echo ' :Dbg <pid>'
+        echo ' :Dbg <name of process>'
+        echo ' :Dbg <ip> <port>'
         echo 'Then:'
-        echo ' :DbgStart'
+        echo ' :Dbg'
         echohl None
         return
     endif
