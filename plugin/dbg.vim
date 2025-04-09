@@ -1,3 +1,6 @@
+" Author:   Anakin Childerhose
+" Copyright: Vim license applies, see ":help license"
+" Version:      0.1
 
 " Describe the debugging experience you want.
 "
@@ -27,8 +30,6 @@
 " - external terminal support
 "
 " dbg.vim - A Debug Adapter Protocol client the Vim way
-" Maintainer:   Anakin Childerhose
-" Version:      0.1
 
 
 " COMMANDS TO ADD
