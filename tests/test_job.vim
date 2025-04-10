@@ -17,14 +17,6 @@ endf
 
 function TestInitJobTermSucceeds()
 
-    function! JobCmd(cmd, opts)
-        return jobstart(a:cmd, a:opts)
-    endf
-
-    function! Nvim_get_chan_info(job)
-        return nvim_get_chan_info(a:job)
-    endf
-
     let win_before = win_getid()
     let buf_count_before = len(getbufinfo())
 
@@ -52,14 +44,6 @@ function TestInitJobTermSucceeds()
 endf
 
 function TestInitJobPtySucceeds()
-
-    function! JobCmd(cmd, opts)
-        return jobstart(a:cmd, a:opts)
-    endf
-
-    function! Nvim_get_chan_info(job)
-        return nvim_get_chan_info(a:job)
-    endf
 
     let win_before = win_getid()
     let buf_count_before = len(getbufinfo())
@@ -92,20 +76,15 @@ function TestInitJobFailedToGetJob()
     " Test that when JobCmd fails buffer state and window state is properly
     " restored
 
-    " Figure out a way to restore the functions
-    function! JobCmd(cmd, opts)
+    function ReturnZero(cmd, opts)
         return 0
-    endf
-
-    function! Nvim_get_chan_info(job)
-        return nvim_get_chan_info(a:job)
     endf
 
     let buf_count_before = len(getbufinfo())
     let win_before = win_getid()
     let win = CreateWindow('tab')
 
-    let actual = InitJob("gdb", #{pty: v:true}, win)
+    let actual = InitJob("gdb", #{pty: v:true}, win, 'ReturnZero')
 
     let win_after = win_getid()
     let buf_count_after = len(getbufinfo())
@@ -121,19 +100,15 @@ endf
 function TestInitJobFailedJobNotExecutable()
     " Test that when JobCmd fails buffer state and window state is properly
     " restored
-    function! JobCmd(cmd, opts)
+    function! ReturnNegOne(cmd, opts)
         return -1
-    endf
-
-    function! Nvim_get_chan_info(job)
-        return nvim_get_chan_info(a:job)
     endf
 
     let win_before = win_getid()
     let buf_count_before = len(getbufinfo())
     let win = CreateWindow('tab')
 
-    let actual = InitJob("gdb", #{pty: v:true}, win)
+    let actual = InitJob("gdb", #{pty: v:true}, win, 'ReturnNegOne')
 
     let win_after = win_getid()
     let buf_count_after = len(getbufinfo())
@@ -149,11 +124,7 @@ endf
 
 function TestInitJobChanNoPty()
 
-    function! JobCmd(cmd, opts)
-        return jobstart(a:cmd, a:opts)
-    endf
-
-    function! Nvim_get_chan_info(job)
+    function! ReturnNoPty(job)
         return #{buffer: 200}
     endf
 
@@ -161,7 +132,7 @@ function TestInitJobChanNoPty()
     let buf_count_before = len(getbufinfo())
     let win = CreateWindow('tab')
 
-    let actual = InitJob("gdb", #{pty: v:true}, win)
+    let actual = InitJob("gdb", #{pty: v:true}, win, 'jobstart', 'ReturnNoPty')
 
     let win_after = win_getid()
     let buf_count_after = len(getbufinfo())

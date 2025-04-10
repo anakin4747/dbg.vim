@@ -22,18 +22,11 @@ function! CreateWindow(location = '')
     return new
 endf
 
-" Allows for mocking and refactoring
-function! JobCmd(cmd, opts)
-    return jobstart(a:cmd, a:opts)
-endf
-
-function! Nvim_get_chan_info(job)
-    return nvim_get_chan_info(a:job)
-endf
-
 " On success returns a dict with required info
 " On failure returns empty dict or job id
-function! InitJob(cmd, opts, win)
+function! InitJob(cmd, opts, win,
+            \ f_jobstart = 'jobstart', f_chan_info = 'nvim_get_chan_info')
+
 
     let initial_win = win_getid()
 
@@ -43,7 +36,7 @@ function! InitJob(cmd, opts, win)
         return {}
     endtry
 
-    let job = JobCmd(a:cmd, a:opts)
+    let job = call(a:f_jobstart, [a:cmd, a:opts])
     if job <= 0
         echohl WarningMsg
         echo 'Failed to open the program terminal window'
@@ -53,7 +46,7 @@ function! InitJob(cmd, opts, win)
         return {}
     endif
 
-    let info = Nvim_get_chan_info(job)
+    let info = call(a:f_chan_info, [job])
 
     let pty = get(info, 'pty', '')
     if empty(pty)
