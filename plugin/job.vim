@@ -22,6 +22,11 @@ function! CreateWindow(location = '')
     return new
 endf
 
+function! DeinitJob(job_dict)
+    execute $"silent! bwipeout! {nvim_win_get_buf(a:job_dict.win)}"
+    call jobstop(a:job_dict.job)
+endf
+
 " On success returns a dict with required info
 " On failure returns empty dict or job id
 function! InitJob(cmd, opts, win,

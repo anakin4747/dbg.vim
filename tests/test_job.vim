@@ -148,3 +148,47 @@ function TestInitJobChanNoPty()
     " The window should be closed and no longer valid
     call assert_false(nvim_win_is_valid(win))
 endf
+
+function TestDeinitPtyJob()
+
+    let win_before = win_getid()
+    let buf_count_before = len(getbufinfo())
+    let win = CreateWindow('tab')
+
+    let job_dict = InitJob("gdb", #{pty: v:true}, win)
+
+    call DeinitJob(job_dict)
+
+    let win_after = win_getid()
+    let buf_count_after = len(getbufinfo())
+
+    call assert_equal(0, jobstop(job_dict.job), 'Job was not stopped')
+
+    call assert_equal(win_before, win_after)
+    call assert_equal(buf_count_before, buf_count_after)
+
+    " The window should be closed and no longer valid
+    call assert_false(nvim_win_is_valid(win))
+endf
+
+function TestDeinitTermJob()
+
+    let win_before = win_getid()
+    let buf_count_before = len(getbufinfo())
+    let win = CreateWindow('tab')
+
+    let job_dict = InitJob("gdb", #{term: v:true}, win)
+
+    call DeinitJob(job_dict)
+
+    let win_after = win_getid()
+    let buf_count_after = len(getbufinfo())
+
+    call assert_equal(0, jobstop(job_dict.job), 'Job was not stopped')
+
+    call assert_equal(win_before, win_after)
+    call assert_equal(buf_count_before, buf_count_after)
+
+    " The window should be closed and no longer valid
+    call assert_false(nvim_win_is_valid(win))
+endf
