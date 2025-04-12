@@ -23,52 +23,48 @@ function! CreateWindow(location = '')
 endf
 
 function! DeinitJob(job_dict)
-    execute $"silent! bwipeout! {nvim_win_get_buf(a:job_dict.win)}"
+    if a:job_dict->has_key('win')
+        execute $"silent! bwipeout! {nvim_win_get_buf(a:job_dict.win)}"
+    endif
     call jobstop(a:job_dict.job)
 endf
 
 " On success returns a dict with required info
 " On failure returns empty dict or job id
-function! InitJob(cmd, opts, win,
-            \ f_jobstart = 'jobstart', f_chan_info = 'nvim_get_chan_info')
+function! InitJob(cmd, opts, jobstart = 'jobstart')
 
+    let job_dict = {}
 
     let initial_win = win_getid()
 
-    try
-        call nvim_set_current_win(a:win)
-    catch
-        return {}
-    endtry
+    if has_key(a:opts, 'term') && a:opts.term
+        let win_loc = get(a:opts, 'location', '')
+        let win = CreateWindow(win_loc)
+        call nvim_set_current_win(win)
+        call extend(job_dict, #{win: win})
+    endif
 
-    let job = call(a:f_jobstart, [a:cmd, a:opts])
+    let job = call(a:jobstart, [a:cmd, a:opts])
     if job <= 0
         echohl WarningMsg
         echo 'Failed to open the program terminal window'
         echohl None
-        execute $"bwipeout {nvim_win_get_buf(a:win)}"
+        if exists('win')
+            execute $"silent! bwipeout! {nvim_win_get_buf(job_dict['win'])}"
+        endif
         call nvim_set_current_win(initial_win)
         return {}
     endif
 
-    let info = call(a:f_chan_info, [job])
-
-    let pty = get(info, 'pty', '')
-    if empty(pty)
-        execute $"bwipeout {nvim_win_get_buf(a:win)}"
-        call jobstop(job)
-        call nvim_set_current_win(initial_win)
-        " Return job id on failure to be able to test that the job does not
-        " exist
-        return job
-    endif
+    let info = nvim_get_chan_info(job)
 
     let buf = get(info, 'buffer', -1)
-    if buf < 0
-        call nvim_set_current_win(initial_win)
-        return #{pty: pty, win: a:win, job: job}
+    if buf > 0
+        call extend(job_dict, #{buf: buf})
     endif
 
+    call extend(job_dict, #{pty: info['pty'], job: job})
+
     call nvim_set_current_win(initial_win)
-    return #{pty: pty, buf: buf, win: a:win, job: job}
+    return job_dict
 endf
