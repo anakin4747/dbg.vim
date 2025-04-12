@@ -56,8 +56,10 @@ function! s:Dbg(args = "")
 
     " Config logic goes around here
     "
-    " Make sure to account for being in a terminal buffer
+    " TODO: Make sure to account for being in a terminal buffer
     let remote = GetRemote(expand("%"))
+
+    " TODO: Figure out how to handle running :Dbg during a debug
 
     " Determine which action to take based on config and args
     let action = GetAction({}, a:args)
