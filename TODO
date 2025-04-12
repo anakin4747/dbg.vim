@@ -1,4 +1,12 @@
 
+" When you write the code first the tests you write are no longer black box
+" tests, you having implemented the code are now more likely to make tests that
+" are too tied into one implementation causing extra rewriting
+
+
+The JobInit will create the window for the job to be in.
+It will need the arguments of the location
+
 have a config already made for neovim, with the gdb option
 "set follow-fork-mode child"
 need to have some default configs to source

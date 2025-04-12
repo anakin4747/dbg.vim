@@ -54,8 +54,12 @@ command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 
 function! s:Dbg(args = "")
 
+    " Config logic goes around here
+    "
+    " Make sure to account for being in a terminal buffer
     let remote = GetRemote(expand("%"))
 
+    " Determine which action to take based on config and args
     let action = GetAction({}, a:args)
 
     if empty(action)
