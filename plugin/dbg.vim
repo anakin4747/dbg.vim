@@ -49,6 +49,15 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
     return state
 endf
 
+function! StopDebugger(state)
+    call DeinitJob(a:state.dbgee)
+    let a:state.dbgee = {}
+    call DeinitJob(a:state.dbger)
+    let a:state.dbger = {}
+    call DeinitJob(a:state.comm)
+    let a:state.comm = {}
+endf
+
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 

@@ -31,3 +31,23 @@ endf
 " debuggee
 "function TestStartDebuggerLocationConfig()
 "endf
+
+function TestStopDebugger()
+
+    let expected = #{dbgee: {}, dbger: {}, comm: {}}
+
+    let state = StartDebugger("gdb")
+    let debuggee_id = state.dbgee.job
+    let debugger_id = state.dbger.job
+    let comm_id = state.comm.job
+
+    call StopDebugger(state)
+
+    " Assert that it that all the jobs have already been stopped
+    call assert_equal(0, jobstop(debuggee_id),
+                \ 'StopDebugger did not stop debuggee job')
+    call assert_equal(0, jobstop(debugger_id),
+                \ 'StopDebugger did not stop debugger job')
+    call assert_equal(0, jobstop(comm_id),
+                \ 'StopDebugger did not stop debuggee communication job')
+endf
