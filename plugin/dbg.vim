@@ -82,11 +82,6 @@ let DbgState = {}
 
 function! s:Dbg(args = "")
 
-    if s:Running(g:DbgState)
-        echom "Restarting debugging session"
-        call s:StopDebugger(g:DbgState)
-    endif
-
     " Config logic goes around here
     "
     " TODO: Make sure to account for being in a terminal buffer
@@ -111,6 +106,14 @@ function! s:Dbg(args = "")
         echohl None
         return
     endif
+
+    if s:Running(g:DbgState)
+        echohl ModeMsg
+        echom "Restarting debugging session"
+        echohl None
+        call s:StopDebugger(g:DbgState)
+    endif
+
 
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
     if empty(cmd)
