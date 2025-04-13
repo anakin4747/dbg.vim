@@ -34,9 +34,7 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
         return state
     endif
 
-    let cmd = $"{a:cmd} -tty {state.comm.pty} -ex 'echo startupdone\n'"
-
-    let state.dbger = call(a:InitJob, [cmd, #{term: v:true, location: 'tab'}])
+    let state.dbger = call(a:InitJob, [a:cmd, #{term: v:true, location: 'tab'}])
     if empty(state.dbger) || !state.dbgee->has_key("pty")
         echohl WarningMsg
         echo "Failed to init job for debugger"
