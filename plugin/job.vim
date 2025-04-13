@@ -30,7 +30,7 @@ function! DeinitJob(job_dict)
 endf
 
 " On success returns a dict with required info
-" On failure returns empty dict or job id
+" On failure returns empty dict
 function! InitJob(cmd, opts, jobstart = 'jobstart')
 
     let job_dict = {}
