@@ -51,3 +51,27 @@ function TestStopDebugger()
     call assert_equal(0, jobstop(comm_id),
                 \ 'StopDebugger did not stop debuggee communication job')
 endf
+
+function TestNotRunning()
+    call assert_false(Running({}))
+    call assert_false(Running(#{test: "test"}))
+endf
+
+function TestRunning()
+
+    let state = StartDebugger("gdb")
+
+    call assert_true(Running(state))
+
+    call StopDebugger(state)
+
+    call assert_false(Running(state))
+
+    let state = StartDebugger("gdb")
+
+    call assert_true(Running(state))
+
+    call StopDebugger(state)
+
+    call assert_false(Running(state))
+endf

@@ -58,10 +58,33 @@ function! StopDebugger(state)
     let a:state.comm = {}
 endf
 
+function! Running(state)
+    if empty(a:state)
+        return v:false
+    endif
+
+    try
+        call jobpid(a:state.dbgee.job)
+        call jobpid(a:state.dbger.job)
+        call jobpid(a:state.comm.job)
+    catch
+        return v:false
+    endtry
+
+    return v:true
+endf
+
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 
+let DbgState = {}
+
 function! s:Dbg(args = "")
+
+    if Running(g:DbgState)
+        echom "Restarting debugging session"
+        call StopDebugger(g:DbgState)
+    endif
 
     " Config logic goes around here
     "
@@ -96,5 +119,5 @@ function! s:Dbg(args = "")
         return
     endif
 
-    let state = StartDebugger(cmd)
+    let g:DbgState = StartDebugger(cmd)
 endf
