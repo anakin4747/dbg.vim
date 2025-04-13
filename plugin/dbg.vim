@@ -50,6 +50,12 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
 endf
 
 function! StopDebugger(state)
+    if !Running(a:state)
+        echohl WarningMsg
+        echo "Failed to stop debugger since it was not running"
+        echohl None
+        return
+    endif
     call DeinitJob(a:state.dbgee)
     let a:state.dbgee = {}
     call DeinitJob(a:state.dbger)
