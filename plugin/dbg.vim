@@ -103,9 +103,9 @@ function! s:Dbg(args = "")
         echohl Title
         echo 'Try one of:'
         echo ' :Dbg /path/to/program'
-        echo ' :Dbg <pid>'
-        echo ' :Dbg <name of process>'
-        echo ' :Dbg <ip> <port>'
+        "echo ' :Dbg <pid>'
+        "echo ' :Dbg <name of process>'
+        "echo ' :Dbg <ip> <port>'
         echo 'Then:'
         echo ' :Dbg'
         echohl None
