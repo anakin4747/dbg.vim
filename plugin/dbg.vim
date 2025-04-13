@@ -11,7 +11,7 @@
 
 " TODO: The state should be injected so that the location configuration can be
 " injected
-function! StartDebugger(cmd, InitJob = 'InitJob')
+function! s:StartDebugger(cmd, InitJob = 'InitJob')
     let state = {}
 
     let dummy_process = 'tail -f /dev/null'
@@ -49,7 +49,7 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
     return state
 endf
 
-function! StopDebugger(state)
+function! s:StopDebugger(state)
     call DeinitJob(a:state.dbgee)
     let a:state.dbgee = {}
     call DeinitJob(a:state.dbger)
@@ -58,7 +58,7 @@ function! StopDebugger(state)
     let a:state.comm = {}
 endf
 
-function! Running(state)
+function! s:Running(state)
     if empty(a:state)
         return v:false
     endif
@@ -76,15 +76,15 @@ endf
 
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
-command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
+command! -nargs=0 DbgStop call s:StopDebugger(g:DbgState)
 
 let DbgState = {}
 
 function! s:Dbg(args = "")
 
-    if Running(g:DbgState)
+    if s:Running(g:DbgState)
         echom "Restarting debugging session"
-        call StopDebugger(g:DbgState)
+        call s:StopDebugger(g:DbgState)
     endif
 
     " Config logic goes around here
@@ -120,5 +120,5 @@ function! s:Dbg(args = "")
         return
     endif
 
-    let g:DbgState = StartDebugger(cmd)
+    let g:DbgState = s:StartDebugger(cmd)
 endf
