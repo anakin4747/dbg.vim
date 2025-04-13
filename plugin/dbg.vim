@@ -76,6 +76,7 @@ endf
 
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
+command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 
 let DbgState = {}
 
