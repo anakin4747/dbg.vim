@@ -72,13 +72,26 @@ function! Running(state)
 
     try
         call jobpid(a:state.dbgee.job)
-        call jobpid(a:state.dbger.job)
-        call jobpid(a:state.comm.job)
+        let debuggee_running = v:true
     catch
-        return v:false
+        let debuggee_running = v:false
     endtry
 
-    return v:true
+    try
+        call jobpid(a:state.dbger.job)
+        let debugger_running = v:true
+    catch
+        let debugger_running = v:false
+    endtry
+
+    try
+        call jobpid(a:state.comm.job)
+        let comm_running = v:true
+    catch
+        let comm_running = v:false
+    endtry
+
+    return debuggee_running || debugger_running || comm_running
 endf
 
 " TODO: smarter tab completion
