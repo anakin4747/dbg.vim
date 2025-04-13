@@ -50,6 +50,9 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
 endf
 
 function! StopDebugger(state)
+    if !Running(a:state)
+        return
+    endif
     call DeinitJob(a:state.dbgee)
     let a:state.dbgee = {}
     call DeinitJob(a:state.dbger)
