@@ -113,7 +113,7 @@ function! s:Dbg(args = "")
         return
     endif
 
-    if s:Running(g:DbgState)
+    if Running(g:DbgState)
         echohl ModeMsg
         echom "Restarting debugging session"
         echohl None
