@@ -1,4 +1,6 @@
 
+command line tool called dbg that runs :Dbg
+
 " When you write the code first the tests you write are no longer black box
 " tests, you having implemented the code are now more likely to make tests that
 " are too tied into one implementation causing extra rewriting
