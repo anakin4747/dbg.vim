@@ -1,4 +1,7 @@
 
+Next steps:
+- Handle output from comm for mi stuff
+add autocmd to enter insert mode when entering the debugger prompt buffer
 command line tool called dbg that runs :Dbg
 
 " When you write the code first the tests you write are no longer black box
