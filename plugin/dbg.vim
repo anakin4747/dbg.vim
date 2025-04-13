@@ -49,19 +49,22 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
     return state
 endf
 
+" TODO: :DbgStop cleans up all leftover processes
 function! StopDebugger(state)
-    if !Running(a:state)
-        echohl WarningMsg
-        echo "Failed to stop debugger since it was not running"
-        echohl None
-        return
+    if a:state->has_key('dbgee')
+        call DeinitJob(a:state.dbgee)
+        let a:state.dbgee = {}
     endif
-    call DeinitJob(a:state.dbgee)
-    let a:state.dbgee = {}
-    call DeinitJob(a:state.dbger)
-    let a:state.dbger = {}
-    call DeinitJob(a:state.comm)
-    let a:state.comm = {}
+
+    if a:state->has_key('dbger')
+        call DeinitJob(a:state.dbger)
+        let a:state.dbger = {}
+    endif
+
+    if a:state->has_key('comm')
+        call DeinitJob(a:state.comm)
+        let a:state.comm = {}
+    endif
 endf
 
 function! Running(state)
@@ -117,7 +120,7 @@ function! s:Dbg(args = "")
         echohl ModeMsg
         echom "Restarting debugging session"
         echohl None
-        call s:StopDebugger(g:DbgState)
+        call StopDebugger(g:DbgState)
     endif
 
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
