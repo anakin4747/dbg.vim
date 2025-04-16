@@ -26,7 +26,7 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
                 \ #{term: v:true, location: 'tab'}])
     if empty(state.dbgee) || !state.dbgee->has_key("pty")
         echohl WarningMsg
-        echo "Failed to init job for debuggee"
+        echom "Failed to init job for debuggee"
         echohl None
         return state
     endif
@@ -35,7 +35,7 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
                 \ #{pty: v:true, on_stdout: function('HandleCommStdout')}])
     if empty(state.comm) || !state.comm->has_key("pty")
         echohl WarningMsg
-        echo "Failed to init job for debugger communication"
+        echom "Failed to init job for debugger communication"
         echohl None
         call DeinitJob(state.dbgee)
         return state
@@ -44,7 +44,7 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
     let state.dbger = call(a:InitJob, [a:cmd, #{term: v:true, location: 'tab'}])
     if empty(state.dbger) || !state.dbgee->has_key("pty")
         echohl WarningMsg
-        echo "Failed to init job for debugger"
+        echom "Failed to init job for debugger"
         echohl None
         call DeinitJob(state.dbgee)
         call DeinitJob(state.comm)
@@ -131,15 +131,15 @@ function! s:Dbg(args = "")
 
     if empty(action)
         echohl WarningMsg
-        echo $"Dbg config not set up for remote: {remote}"
+        echom $"Dbg config not set up for remote: {remote}"
         echohl Title
-        echo 'Try one of:'
-        echo ' :Dbg /path/to/program'
+        echom 'Try one of:'
+        echom ' :Dbg /path/to/program'
         "echo ' :Dbg <pid>'
         "echo ' :Dbg <name of process>'
         "echo ' :Dbg <ip> <port>'
-        echo 'Then:'
-        echo ' :Dbg'
+        echom 'Then:'
+        echom ' :Dbg'
         echohl None
         return
     endif
