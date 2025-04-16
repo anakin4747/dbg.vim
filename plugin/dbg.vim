@@ -121,11 +121,13 @@ function! s:Dbg(args = "")
         " TODO: Filter json some how at somepoint
         let config = config_file->readfile()->json_decode()
     else
-        let config = {}
+        let config = #{hist: [{}]}
     endif
 
+    let last_config = config.hist[0]
+
     " Determine which action to take based on config and args
-    let action = GetAction(config, a:args)
+    let action = GetAction(last_config, a:args)
 
     if empty(action)
         echohl WarningMsg
