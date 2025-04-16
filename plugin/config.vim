@@ -4,8 +4,14 @@ function! CleanConfig(config_file)
     endtry
 endf
 
-function! GetConfig()
-    return "%"->expand()->GetRemote()->GetConfigFile()->readfile()->json_decode()
+function! ShowConfig()
+    let config_file = "%"->expand()->GetRemote()->GetConfigFile()
+
+    if filereadable(config_file)
+        echom config_file->readfile()->json_decode()
+    else
+        echohl ModeMsg | echom "No config file" | echohl None
+    endif
 endf
 
 function! GetConfigFile(remote)

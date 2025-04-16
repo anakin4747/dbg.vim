@@ -105,7 +105,7 @@ endf
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call expand("%")->GetRemote()->GetConfigFile()->CleanConfig()
-command! -nargs=0 DbgShowConfig echom GetConfig()
+command! -nargs=0 DbgShowConfig call ShowConfig()
 
 if !exists("g:DbgState")
     let DbgState = {}
