@@ -33,7 +33,9 @@ function! UpdateConfig(config_file, action_dict)
         let config = #{hist: []}
     endif
 
-    let config.hist = InsertNewAction(config.hist, a:action_dict)
+    if a:action_dict.action != 'attach-pid'
+        let config.hist = InsertNewAction(config.hist, a:action_dict)
+    endif
 
     call writefile([json_encode(config)], a:config_file)
 
