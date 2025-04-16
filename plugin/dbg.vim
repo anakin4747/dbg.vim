@@ -9,6 +9,12 @@
 "endif
 "let g:loaded_dbg = 1
 
+function! HandleCommStdout(chan, data, name)
+
+    " Have statemachine here to handle incomplete lines
+    call writefile(a:data, '/tmp/commoutput', 'a')
+endf
+
 " TODO: The state should be injected so that the location configuration can be
 " injected
 function! StartDebugger(cmd, InitJob = 'InitJob')
@@ -16,8 +22,8 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
 
     let dummy_process = 'tail -f /dev/null'
 
-    let state.dbgee = call(a:InitJob,
-                \ [dummy_process, #{term: v:true, location: 'tab'}])
+    let state.dbgee = call(a:InitJob, [dummy_process,
+                \ #{term: v:true, location: 'tab'}])
     if empty(state.dbgee) || !state.dbgee->has_key("pty")
         echohl WarningMsg
         echo "Failed to init job for debuggee"
@@ -25,7 +31,8 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
         return state
     endif
 
-    let state.comm = call(a:InitJob, [dummy_process, #{pty: v:true}])
+    let state.comm = call(a:InitJob, [dummy_process,
+                \ #{pty: v:true, on_stdout: function('HandleCommStdout')}])
     if empty(state.comm) || !state.comm->has_key("pty")
         echohl WarningMsg
         echo "Failed to init job for debugger communication"
