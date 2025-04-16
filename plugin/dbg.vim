@@ -102,19 +102,14 @@ let DbgState = {}
 
 function! s:Dbg(args = "")
 
-    " Config logic goes around here
-    "
-    " TODO: Make sure to account for being in a terminal buffer
-    let remote = GetRemote(expand("%"))
-
-    " TODO: Figure out how to handle running :Dbg during a debug
+    let config = GetConfig(expand("%"))
 
     " Determine which action to take based on config and args
     let action = GetAction({}, a:args)
 
     if empty(action)
         echohl WarningMsg
-        echo $"No program setup to debug for remote: {remote}"
+        echo $"Dbg config not set up for remote: {GetRemote(expand("%"))}"
         echohl Title
         echo 'Try one of:'
         echo ' :Dbg /path/to/program'
@@ -126,6 +121,8 @@ function! s:Dbg(args = "")
         echohl None
         return
     endif
+
+    call UpdateConfig(action)
 
     if Running(g:DbgState)
         echohl ModeMsg

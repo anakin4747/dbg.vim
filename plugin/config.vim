@@ -1,19 +1,26 @@
-
-
-
-" repo local configs need to be stored in a file somewhere
+" Have the repo configs just be a list of all the previous settings
 "
-" like have one file that stores the repos root dir in the first column and the
-" second column is just the config vimscript dict
+" They do not grow upon each other, they are independent
+"
+" Anytime it is started with new different args to the current repo config
+" then a new one is added to the beginning of the config
 
-" TODO
-" Given the current file, I want to be able to get the configuration stored in
-" the internal storage for
-function! GetConfig(cfg_dir, file)
-    " Have the repo configs just be a list of all the previous settings
-    "
-    " They do not grow upon each other, they are independent
-    "
-    " Anytime it is started with new different args to the current repo config
-    " then a new one is added to the beginning of the config
+function! GetConfigFile(remote)
+    let sha = sha256(a:remote)
+    return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
+endf
+
+function! GetConfig(current_file)
+
+    let config_file = a:current_file->GetRemote()->GetConfigFile()
+
+    if !filereadable(config_file)
+        return {}
+    endif
+
+    return json_decode(readfile(config_file))
+endf
+
+function! UpdateConfig(action_dict)
+
 endf
