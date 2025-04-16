@@ -1,10 +1,3 @@
-" Have the repo configs just be a list of all the previous settings
-"
-" They do not grow upon each other, they are independent
-"
-" Anytime it is started with new different args to the current repo config
-" then a new one is added to the beginning of the config
-
 function! CleanConfig(config_file)
     try
         call delete(a:config_file)
