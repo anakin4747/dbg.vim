@@ -1,6 +1,14 @@
 function! CleanConfig(config_file)
+
+    if !filereadable(a:config_file)
+        echohl ModeMsg | echom "No config file" | echohl None
+        return
+    endif
+
     try
         call delete(a:config_file)
+    catch
+        echohl WarningMsg | echom "Failed to delete config" | echohl None
     endtry
 endf
 
