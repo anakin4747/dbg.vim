@@ -111,14 +111,23 @@ endif
 
 function! s:Dbg(args = "")
 
-    let config = GetConfig(expand("%"))
+    let remote = GetRemote(expand("%"))
+
+    let config_file = GetConfigFile(remote)
+
+    if filereadable(config_file)
+        " TODO: Filter json some how at somepoint
+        let config = config_file->readfile()->json_decode()
+    else
+        let config = {}
+    endif
 
     " Determine which action to take based on config and args
-    let action = GetAction({}, a:args)
+    let action = GetAction(config, a:args)
 
     if empty(action)
         echohl WarningMsg
-        echo $"Dbg config not set up for remote: {GetRemote(expand("%"))}"
+        echo $"Dbg config not set up for remote: {remote}"
         echohl Title
         echo 'Try one of:'
         echo ' :Dbg /path/to/program'
@@ -131,7 +140,7 @@ function! s:Dbg(args = "")
         return
     endif
 
-    call UpdateConfig(action)
+    call UpdateConfig(config_file, action)
 
     if Running(g:DbgState)
         echohl ModeMsg

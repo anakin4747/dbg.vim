@@ -10,17 +10,22 @@ function! GetConfigFile(remote)
     return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
 endf
 
-function! GetConfig(current_file)
-
-    let config_file = a:current_file->GetRemote()->GetConfigFile()
-
-    if !filereadable(config_file)
-        return {}
-    endif
-
-    return json_decode(readfile(config_file))
+function! InsertNewAction(history, action_dict)
+    let history = a:history->filter('v:val != a:action_dict')
+    return history->insert(a:action_dict)
 endf
 
-function! UpdateConfig(action_dict)
+function! UpdateConfig(config_file, action_dict)
 
+    if filereadable(a:config_file)
+        let config = a:config_file->readfile()->json_decode()
+    else
+        let config = #{hist: []}
+    endif
+
+    let config.hist = InsertNewAction(config.hist, a:action_dict)
+
+    call writefile([json_encode(config)], a:config_file)
+
+    echo a:config_file->readfile()->json_decode()
 endf
