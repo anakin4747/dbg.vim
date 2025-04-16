@@ -1,3 +1,4 @@
+:DbgStop does not stop dap jobs correctly at the moment
 
 Next steps:
 - Handle output from comm for mi stuff
@@ -7,7 +8,6 @@ command line tool called dbg that runs :Dbg
 " When you write the code first the tests you write are no longer black box
 " tests, you having implemented the code are now more likely to make tests that
 " are too tied into one implementation causing extra rewriting
-
 
 The JobInit will create the window for the job to be in.
 It will need the arguments of the location
@@ -44,7 +44,6 @@ need to have some default configs to source
 " - maybe have a way to read .vscode/launch.json files
 " - cool to tell you if the application you are trying to debug does not have
 "   debug symbols
-" - external terminal support
 
 
 " COMMANDS TO ADD
