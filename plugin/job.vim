@@ -26,7 +26,9 @@ function! DeinitJob(job_dict)
     if a:job_dict->has_key('win')
         execute $"silent! bwipeout! {nvim_win_get_buf(a:job_dict.win)}"
     endif
-    call jobstop(a:job_dict.job)
+    if a:job_dict->has_key('job')
+        call jobstop(a:job_dict.job)
+    endif
 endf
 
 " On success returns a dict with required info
