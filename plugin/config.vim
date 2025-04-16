@@ -5,6 +5,16 @@
 " Anytime it is started with new different args to the current repo config
 " then a new one is added to the beginning of the config
 
+function! CleanConfig(config_file)
+    try
+        call delete(a:config_file)
+    endtry
+endf
+
+function! GetConfig()
+    return "%"->expand()->GetRemote()->GetConfigFile()->readfile()->json_decode()
+endf
+
 function! GetConfigFile(remote)
     let sha = sha256(a:remote)
     return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
