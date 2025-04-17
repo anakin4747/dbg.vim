@@ -1,24 +1,40 @@
-function! CleanConfig(config_file)
+function! CleanConfig()
 
-    if !filereadable(a:config_file)
-        call LogWarning("No config file")
+    let remote = "%"->expand()->GetRemote()
+    if empty(remote)
+        call LogError("Failed to get repo remote")
+        return
+    endif
+
+    let config_file = GetConfigFile(remote)
+
+    if !filereadable(config_file)
+        call LogInfo("No config file")
         return
     endif
 
     try
-        call delete(a:config_file)
+        call delete(config_file)
     catch
         call LogWarning("Failed to delete config")
     endtry
 endf
 
-function! ShowConfig()
-    let config_file = "%"->expand()->GetRemote()->GetConfigFile()
+function! ShowConfig() abort
+
+    let remote = "%"->expand()->GetRemote()
+    if empty(remote)
+        call LogError("Failed to get repo remote")
+        return
+    endif
+
+    let config_file = GetConfigFile(remote)
 
     if filereadable(config_file)
         echom config_file->readfile()->json_decode()
     else
         call LogWarning("No config file")
+        return
     endif
 endf
 

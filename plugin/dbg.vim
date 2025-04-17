@@ -104,7 +104,7 @@ endf
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
-command! -nargs=0 DbgCleanConfig call expand("%")->GetRemote()->GetConfigFile()->CleanConfig()
+command! -nargs=0 DbgCleanConfig call CleanConfig()
 command! -nargs=0 DbgShowConfig call ShowConfig()
 command! -nargs=0 DbgLogToggle call ToggleDbgLogging()
 
@@ -127,6 +127,11 @@ endf
 function! s:Dbg(args = "")
 
     let remote = GetRemote(expand("%"))
+    if empty(remote)
+        call LogError("Failed to get repo remote")
+        return
+    endif
+
     call LogDebug($"remote: {remote}")
 
     let config_file = GetConfigFile(remote)
