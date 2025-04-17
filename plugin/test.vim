@@ -26,7 +26,7 @@ function! DbgRunTests()
     let failcount = 0
 
     for test in split(test_funcs, "\n")
-        execute "silent call ".test."()"
+        execute $"silent call {test}()"
 
         if !empty(v:errors)
             echohl WarningMsg
