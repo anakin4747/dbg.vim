@@ -16,3 +16,23 @@ function TestGetRemoteTerm()
                 \ "Fails when not in dbg.vim root dir")
     bwipeout!
 endf
+
+function TestGetRemoteHandlesBadArgs()
+    let expected = ""
+    let actual = GetRemote({})
+    call assert_equal(expected, actual)
+
+    let actual = GetRemote(0)
+    call assert_equal(expected, actual)
+
+    let actual = GetRemote([])
+    call assert_equal(expected, actual)
+endf
+
+function TestGetRemoteTmpInput()
+    let expected = "https://github.com/anakin4747/dbg.vim"
+    let actual = GetRemote('/tmp/file')
+    call assert_equal(expected, actual,
+                \ "Fails when not in dbg.vim root dir")
+endf
+
