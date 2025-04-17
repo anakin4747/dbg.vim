@@ -106,16 +106,31 @@ command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call expand("%")->GetRemote()->GetConfigFile()->CleanConfig()
 command! -nargs=0 DbgShowConfig call ShowConfig()
+command! -nargs=0 DbgLogToggle call ToggleDbgLogging()
 
 if !exists("g:DbgState")
     let DbgState = {}
 endif
 
+function! PrintUsage()
+    echohl Title
+    echom 'Try one of:'
+    echom ' :Dbg /path/to/program'
+    "echo ' :Dbg <pid>'
+    "echo ' :Dbg <name of process>'
+    "echo ' :Dbg <ip> <port>'
+    echom 'Then:'
+    echom ' :Dbg'
+    echohl None
+endf
+
 function! s:Dbg(args = "")
 
     let remote = GetRemote(expand("%"))
+    call LogDebug($"remote: {remote}")
 
     let config_file = GetConfigFile(remote)
+    call LogDebug($"config_file: {config_file}")
 
     if filereadable(config_file)
         " TODO: Filter json some how at somepoint
@@ -124,40 +139,32 @@ function! s:Dbg(args = "")
         let config = #{hist: [{}]}
     endif
 
+    call LogDebug($"config: {config}")
+
     let last_config = config.hist[0]
+    call LogDebug($"last_config: {last_config}")
 
     " Determine which action to take based on config and args
     let action = GetAction(last_config, a:args)
+    call LogDebug($"action: {action}")
 
     if empty(action)
-        echohl WarningMsg
-        echom $"Dbg config not set up for remote: {remote}"
-        echohl Title
-        echom 'Try one of:'
-        echom ' :Dbg /path/to/program'
-        "echo ' :Dbg <pid>'
-        "echo ' :Dbg <name of process>'
-        "echo ' :Dbg <ip> <port>'
-        echom 'Then:'
-        echom ' :Dbg'
-        echohl None
+        call LogWarning($"Dbg config not set up for remote: {remote}")
+        call PrintUsage()
         return
     endif
 
     call UpdateConfig(config_file, action)
 
     if Running(g:DbgState)
-        echohl ModeMsg
-        echom "Restarting debugging session"
-        echohl None
+        call LogInfo("Restarting debugging session")
         call StopDebugger(g:DbgState)
     endif
 
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
+    call LogDebug($"cmd: {cmd}")
     if empty(cmd)
-        " TODO: Clean up error message
-        echoerr "Failed to build debgger command"
-        echo $"{action} gdb {g:default_gdb_args}"
+        call LogError($"Failed to build debgger command: {action} {g:default_gdb_args}")
         return
     endif
 

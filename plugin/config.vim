@@ -1,14 +1,14 @@
 function! CleanConfig(config_file)
 
     if !filereadable(a:config_file)
-        echohl ModeMsg | echom "No config file" | echohl None
+        call LogWarning("No config file")
         return
     endif
 
     try
         call delete(a:config_file)
     catch
-        echohl WarningMsg | echom "Failed to delete config" | echohl None
+        call LogWarning("Failed to delete config")
     endtry
 endf
 
@@ -18,7 +18,7 @@ function! ShowConfig()
     if filereadable(config_file)
         echom config_file->readfile()->json_decode()
     else
-        echohl ModeMsg | echom "No config file" | echohl None
+        call LogWarning("No config file")
     endif
 endf
 
@@ -45,6 +45,4 @@ function! UpdateConfig(config_file, action_dict)
     endif
 
     call writefile([json_encode(config)], a:config_file)
-
-    echo a:config_file->readfile()->json_decode()
 endf
