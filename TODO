@@ -1,3 +1,4 @@
+Provide output for DbgStop to know if it was successful or not
 :DbgStop does not stop dap jobs correctly at the moment
 
 Next steps:
