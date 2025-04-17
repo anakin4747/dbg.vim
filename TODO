@@ -1,3 +1,5 @@
+Figure out how to properly test that a function throws an exception
+
 Provide output for DbgStop to know if it was successful or not
 :DbgStop does not stop dap jobs correctly at the moment
 
