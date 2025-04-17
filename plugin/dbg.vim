@@ -153,23 +153,19 @@ function! s:Dbg(args = "")
         call StopDebugger(g:DbgState)
     endif
 
-    "let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
-    "if empty(cmd)
-    "    " TODO: Clean up error message
-    "    echoerr "Failed to build debgger command"
-    "    echo $"{action} gdb {g:default_gdb_args}"
-    "    return
-    "endif
-
-    let cmd = 'dlv dap -l 127.0.0.1:38697 --log --log-output="dap"'
+    let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
+    if empty(cmd)
+        " TODO: Clean up error message
+        echoerr "Failed to build debgger command"
+        echo $"{action} gdb {g:default_gdb_args}"
+        return
+    endif
 
     let g:DbgState = StartDebugger(cmd)
 
-    "let new_mi_ui_cmd = $"server new-ui mi {g:DbgState.comm.pty}\r"
-    "call chansend(g:DbgState.dbger.job, new_mi_ui_cmd)
-    "
-    "let set_tty = $"server set inferior-tty {g:DbgState.dbgee.pty}\r"
-    "call chansend(g:DbgState.dbger.job, set_tty)
-    "
-    "call chansend(g:DbgState.comm.job, "\r")
+    let new_mi_ui_cmd = $"server new-ui mi {g:DbgState.comm.pty}\r"
+    call chansend(g:DbgState.dbger.job, new_mi_ui_cmd)
+
+    let set_tty = $"server set inferior-tty {g:DbgState.dbgee.pty}\r"
+    call chansend(g:DbgState.dbger.job, set_tty)
 endf
