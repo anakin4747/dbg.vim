@@ -29,5 +29,3 @@ following the Linux kernel coding style.
 - [ ] DAP support
 - [ ] External terminal support
 - [ ] launch.json support
-
-<!-- vim: ft=markdown -->
