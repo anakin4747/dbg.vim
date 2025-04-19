@@ -1,3 +1,6 @@
+
+Change functions to throw errors and rely on abort instead of return values
+
 Figure out how to properly test that a function throws an exception
 
 Provide output for DbgStop to know if it was successful or not
