@@ -1,6 +1,9 @@
 " Given the current file, get the remote of that repo
 function! GetRemote(file) abort
+    call LogDebug($"a:file: {a:file}")
+
     if type(a:file) != v:t_string
+        call LogError("GetRemote() expects a string")
         return ""
     endif
 
@@ -13,9 +16,12 @@ function! GetRemote(file) abort
         let dirname = fnamemodify(a:file, ":p:h")
     endif
 
+    call LogDebug($"dirname: {dirname}")
+
     try
         return $"git -C {dirname} remote -v"->system()->split()[1]
     catch
+        call LogError("Failed to get remote")
         return ""
     endtry
 endf
