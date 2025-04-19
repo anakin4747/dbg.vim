@@ -1,8 +1,8 @@
 " dbg.vim - Debugger plugin inspired by termdebug.vim
 "
-" Author:   Anakin Childerhose
+" Author:    Anakin Childerhose
 " Copyright: Vim license applies, see ":help license"
-" Version:      0.1
+" Version:   0.1
 
 "if exists('g:loaded_dbg')
 "    finish
