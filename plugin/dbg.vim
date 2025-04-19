@@ -146,11 +146,11 @@ function! s:Dbg(args = "")
 
     call LogDebug($"config: {config}")
 
-    let last_config = config.hist[0]
-    call LogDebug($"last_config: {last_config}")
+    let last_action = config.hist[0]
+    call LogDebug($"last_action: {last_action}")
 
     " Determine which action to take based on config and args
-    let action = GetAction(last_config, a:args)
+    let action = GetAction(last_action, a:args)
     call LogDebug($"action: {action}")
 
     if empty(action)
