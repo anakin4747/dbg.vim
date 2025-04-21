@@ -29,3 +29,4 @@ following the Linux kernel coding style.
 - [ ] DAP support
 - [ ] External terminal support
 - [ ] launch.json support
+- [ ] Config git history auto generated
