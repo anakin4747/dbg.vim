@@ -126,7 +126,7 @@ endf
 
 function! s:Dbg(args = "")
 
-    let remote = GetRemote(expand("%"))
+    let remote = GetRemote()
     if empty(remote)
         call LogError("Failed to get repo remote")
         return

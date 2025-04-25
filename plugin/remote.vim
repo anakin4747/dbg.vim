@@ -1,5 +1,5 @@
 " Given the current file, get the remote of that repo
-function! GetRemote(file) abort
+function! GetRemote(file = expand("%")) abort
     call LogDebug($"a:file: {a:file}")
 
     if type(a:file) != v:t_string

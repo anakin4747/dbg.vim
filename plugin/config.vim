@@ -1,6 +1,6 @@
 function! CleanConfig()
 
-    let remote = "%"->expand()->GetRemote()
+    let remote = GetRemote()
     if empty(remote)
         call LogError("Failed to get repo remote")
         return
@@ -22,7 +22,7 @@ endf
 
 function! ShowConfig() abort
 
-    let remote = "%"->expand()->GetRemote()
+    let remote = GetRemote()
     if empty(remote)
         call LogError("Failed to get repo remote")
         return
