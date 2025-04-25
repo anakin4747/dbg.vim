@@ -1,12 +1,6 @@
 function! CleanConfig()
 
-    let remote = GetRemote()
-    if empty(remote)
-        call LogError("Failed to get repo remote")
-        return
-    endif
-
-    let config_file = GetConfigFile(remote)
+    let config_file = GetConfigFile()
 
     if !filereadable(config_file)
         call LogInfo("No config file")
@@ -22,13 +16,7 @@ endf
 
 function! ShowConfig() abort
 
-    let remote = GetRemote()
-    if empty(remote)
-        call LogError("Failed to get repo remote")
-        return
-    endif
-
-    let config_file = GetConfigFile(remote)
+    let config_file = GetConfigFile()
 
     if filereadable(config_file)
         echom config_file->readfile()->json_decode()
@@ -38,7 +26,7 @@ function! ShowConfig() abort
     endif
 endf
 
-function! GetConfigFile(remote)
+function! GetConfigFile(remote = GetRemote())
     let sha = sha256(a:remote)
     return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
 endf
