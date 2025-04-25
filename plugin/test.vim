@@ -1,10 +1,12 @@
 
 function! s:GetTestFuncs()
-    return substitute(execute('function /^Test'), 'function \(\S*\)()[^\n]*\n\?', '\1\n', 'g')
+    return execute('function /^Test')
+            \ ->substitute('function \(\S*\)()[^\n]*\n\?', '\1\n', 'g')
+            \ ->split("\n")
 endfunction
 
 function! s:DeleteOldTests()
-    for test in split(s:GetTestFuncs(), "\n")
+    for test in s:GetTestFuncs()
         execute "delfunction ".test
     endfor
 endfunction
@@ -25,7 +27,7 @@ function! DbgRunTests()
     let passcount = 0
     let failcount = 0
 
-    for test in split(test_funcs, "\n")
+    for test in test_funcs
         execute $"silent call {test}()"
 
         if !empty(v:errors)
