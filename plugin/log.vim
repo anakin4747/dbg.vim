@@ -9,13 +9,20 @@ function! ToggleDbgLogging()
     let g:DbgLogging = !g:DbgLogging
 endf
 
+function! GetCallingFunc(sfile = expand('<sfile>')) abort
+    return a:sfile->substitute('function ', '', '')
+                \ ->split('\.\.')[-2]
+                \ ->substitute('^<SNR>\d\+_', 's:', '')
+endf
+
 function! LogDebug(msg)
     if !g:DbgLogging
         return
     endif
 
+    let calling_func = GetCallingFunc()
     echohl QuickFixLine
-    echom $"{s:repo}: debug: {a:msg}"
+    echom $"{s:repo}: debug: {calling_func}: {a:msg}"
     echohl None
 endf
 
