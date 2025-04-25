@@ -1,6 +1,9 @@
 
 let s:repo = "dbg.vim"
-let DbgLogging = v:false
+
+if !exists('DbgLogging')
+    let DbgLogging = v:false
+endif
 
 function! ToggleDbgLogging()
     let g:DbgLogging = !g:DbgLogging
