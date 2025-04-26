@@ -1,0 +1,72 @@
+{
+    "layout": {
+        "debugger": "tab | vert | horizontal/normal (You will probably need to be able to provide a way to specify corners, maybe widths but that may be too far)",
+        "debuggee": "tab | vert | horizontal/normal",
+        "source": "tab | vert | horizontal/normal",
+        "variables (optional: Not shown if not present)": "tab | vert | horizontal/normal",
+        "stack traces (optional: Not shown if not present)": "tab | vert | horizontal/normal",
+        "etc (optional: Not shown if not present)": "tab | vert | horizontal/normal"
+    },
+    "filetypes": {
+        "c": {
+            "history": [
+                {
+                    "action": "launch",
+                    "program_path": "/bin/bash",
+                    "program_args": [ "-c", "ls" ]
+                },
+                {
+                    "action": "launch",
+                    "program_path": "/bin/sh",
+                    "program_args": [ "-c", "ps" ]
+                }
+            ],
+            "debuggers": [
+                {
+                    "precmd": "# Check if executable has debug symbols?",
+                    "cmd": "gdb",
+                    "args": "",
+                    "postcmd": ""
+                },
+                {
+                    "precmd": "",
+                    "cmd": "lldb",
+                    "args": "",
+                    "postcmd": ""
+                },
+                {
+                    "precmd": "",
+                    "cmd": "lldb-mi",
+                    "args": "",
+                    "postcmd": ""
+                },
+                {
+                    "precmd": "",
+                    "cmd": "lldb-dap",
+                    "args": "",
+                    "postcmd": ""
+                }
+            ]
+        },
+        "rust": {
+            "history": [
+                {},
+                {}
+            ],
+            "debuggers": [
+                {
+                    "precmd": "",
+                    "cmd": "rust-gdb",
+                    "args": "",
+                    "postcmd": ""
+                },
+                {
+                    "precmd": "",
+                    "cmd": "rust-lldb",
+                    "args": "",
+                    "postcmd": ""
+                }
+            ]
+        }
+    }
+}
