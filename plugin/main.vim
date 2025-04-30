@@ -114,7 +114,7 @@ function! GetDebuggers(_, __, ___)
 endf
 
 if !exists("g:DbgState")
-    let DbgState = {}
+    let g:DbgState = {}
 endif
 
 function! PrintUsage()
