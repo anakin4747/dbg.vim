@@ -107,6 +107,11 @@ command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call CleanConfig()
 command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
 command! -nargs=0 DbgLogToggle call ToggleDbgLogging()
+command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
+
+function! GetDebuggers(_, __, ___)
+    return [ "rust-gdb", "rust-lldb", "gdb", "lldb", "lldb-mi", "lldb-dap" ]
+endf
 
 if !exists("g:DbgState")
     let DbgState = {}
