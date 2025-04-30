@@ -20,9 +20,8 @@ function! LogDebug(msg)
         return
     endif
 
-    let calling_func = GetCallingFunc()
     echohl QuickFixLine
-    echom $"{s:repo}: debug: {calling_func}: {a:msg}"
+    echom $"{s:repo}: debug: {GetCallingFunc()}: {a:msg}"
     echohl None
 endf
 
@@ -34,12 +33,12 @@ endf
 
 function! LogWarning(msg)
     echohl WarningMsg
-    echom $"{s:repo}: warning: {a:msg}"
+    echom $"{s:repo}: warning: {GetCallingFunc()}: {a:msg}"
     echohl None
 endf
 
 function! LogError(msg)
     echohl ErrorMsg
-    echom $"{s:repo}: error: {a:msg}"
+    echom $"{s:repo}: error: {GetCallingFunc()}: {a:msg}"
     echohl None
 endf
