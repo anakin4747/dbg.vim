@@ -14,16 +14,21 @@ function! CleanConfig()
     endtry
 endf
 
-function! ShowConfig() abort
+function! GetOrInitConfig(file = GetConfigFile()) abort
 
-    let config_file = GetConfigFile()
-
-    if filereadable(config_file)
-        echom config_file->readfile()->json_decode()
-    else
-        call LogWarning("No config file")
-        return
+    if filereadable(a:file)
+        return a:file->readfile()->json_decode()
     endif
+
+    call LogInfo($"No config file: creating empty config in {a:file}")
+
+    let config = #{hist: [{}]}
+
+    call mkdir(fnamemodify(a:file, ":p:h"), "p")
+
+    call writefile([json_encode(config)], a:file)
+
+    return config
 endf
 
 function! GetConfigFile(remote = GetRemote())
@@ -36,13 +41,9 @@ function! InsertNewAction(history, action_dict)
     return history->insert(a:action_dict)
 endf
 
-function! UpdateConfig(config_file, action_dict)
+function! UpdateConfig(action_dict, config_file = GetConfigFile())
 
-    if filereadable(a:config_file)
-        let config = a:config_file->readfile()->json_decode()
-    else
-        let config = #{hist: []}
-    endif
+    let config = GetOrInitConfig(a:config_file)
 
     if a:action_dict.action != 'attach-pid'
         let config.hist = InsertNewAction(config.hist, a:action_dict)

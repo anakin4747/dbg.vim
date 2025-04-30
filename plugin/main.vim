@@ -105,7 +105,7 @@ endf
 command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call CleanConfig()
-command! -nargs=0 DbgShowConfig call ShowConfig()
+command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
 command! -nargs=0 DbgLogToggle call ToggleDbgLogging()
 
 if !exists("g:DbgState")
@@ -124,25 +124,9 @@ function! PrintUsage()
     echohl None
 endf
 
-function! s:Dbg(args = "")
+function! s:Dbg(args = "") abort
 
-    let remote = GetRemote()
-    if empty(remote)
-        call LogError("Failed to get repo remote")
-        return
-    endif
-
-    call LogDebug($"remote: {remote}")
-
-    let config_file = GetConfigFile(remote)
-    call LogDebug($"config_file: {config_file}")
-
-    if filereadable(config_file)
-        " TODO: Filter json some how at somepoint
-        let config = config_file->readfile()->json_decode()
-    else
-        let config = #{hist: [{}]}
-    endif
+    let config = GetOrInitConfig()
 
     call LogDebug($"config: {config}")
 
@@ -154,12 +138,12 @@ function! s:Dbg(args = "")
     call LogDebug($"action: {action}")
 
     if empty(action)
-        call LogWarning($"Dbg config not set up for remote: {remote}")
+        call LogWarning($"unable to perform any action")
         call PrintUsage()
         return
     endif
 
-    call UpdateConfig(config_file, action)
+    call UpdateConfig(action)
 
     if Running(g:DbgState)
         call LogInfo("Restarting debugging session")
