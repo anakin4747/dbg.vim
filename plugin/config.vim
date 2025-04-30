@@ -1,4 +1,9 @@
 
+function! GetConfigFile(remote = GetRemote())
+    let sha = sha256(a:remote)
+    return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
+endf
+
 function! CleanConfig(config_file = GetConfigFile())
 
     if !filereadable(a:config_file)
@@ -31,9 +36,3 @@ function! GetOrInitConfig(file = GetConfigFile()) abort
 
     return config
 endf
-
-function! GetConfigFile(remote = GetRemote())
-    let sha = sha256(a:remote)
-    return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
-endf
-
