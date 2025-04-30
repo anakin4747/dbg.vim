@@ -21,7 +21,7 @@ function! GetRemote(file = expand("%")) abort
     try
         let remote = $"git -C {dirname} remote -v"->system()->split()[1]
     catch
-        call LogError("Failed to get remote")
+        call LogError("failed to get remote")
         return ""
     endtry
 

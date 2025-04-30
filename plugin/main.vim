@@ -132,8 +132,8 @@ endf
 function! s:Dbg(args = "") abort
 
     if empty(&filetype)
-        call LogWarning("No &filetype set")
-        call LogInfo("Make sure the &filetype option is properly set to the filetype you wish to debug")
+        call LogWarning("no &filetype set")
+        call LogInfo("make sure the &filetype option is properly set to the filetype you wish to debug")
         return
     endif
 
@@ -147,7 +147,7 @@ function! s:Dbg(args = "") abort
     call LogDebug($"action: {action}")
 
     if empty(action)
-        call LogWarning($"Unable to perform any action for filetype: {&filetype}")
+        call LogWarning($"unable to perform any action for filetype: {&filetype}")
         call PrintUsage()
         return
     endif
@@ -155,14 +155,14 @@ function! s:Dbg(args = "") abort
     call SaveNewAction(action)
 
     if Running(g:DbgState)
-        call LogInfo("Restarting debugging session")
+        call LogInfo("restarting debugging session")
         call StopDebugger(g:DbgState)
     endif
 
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
     call LogDebug($"cmd: {cmd}")
     if empty(cmd)
-        call LogError($"Failed to build debugger command: {action} {g:default_gdb_args}")
+        call LogError($"failed to build debugger command: {action} {g:default_gdb_args}")
         return
     endif
 
