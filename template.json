@@ -7,38 +7,36 @@
         "stack traces (optional: Not shown if not present)": "tab | vert | horizontal/normal",
         "etc (optional: Not shown if not present)": "tab | vert | horizontal/normal"
     },
-    "filetypes": {
-        "c": {
-            "history": [
-                {
-                    "action": "launch",
-                    "program_path": "a.out"
-                },
-                {
-                    "action": "launch",
-                    "program_path": "/bin/sh",
-                    "program_args": [ "-c", "ps" ]
-                }
-            ],
-            "debuggers (this is a list of the previous debugger configs)": [
-                {
-                    "precmd (optional)": "# Check if executable has debug symbols? Maybe not here, in code is better",
-                    "cmd": "gdb",
-                    "args (optional)": "",
-                    "postcmd (optional)": ""
-                },
-                { "cmd": "lldb" }
-            ]
-        },
-        "rust": {
-            "history": [
-                {},
-                {}
-            ],
-            "debuggers": [
-                { "cmd": "rust-gdb" },
-                { "cmd": "rust-lldb" }
-            ]
-        }
+    "c": {
+        "history": [
+            {
+                "action": "launch",
+                "program_path": "a.out"
+            },
+            {
+                "action": "launch",
+                "program_path": "/bin/sh",
+                "program_args": [ "-c", "ps" ]
+            }
+        ],
+        "debuggers (this is a list of the previous debugger configs)": [
+            {
+                "precmd (optional)": "# Check if executable has debug symbols? Maybe not here, in code is better",
+                "cmd": "gdb",
+                "args (optional)": "",
+                "postcmd (optional)": ""
+            },
+            { "cmd": "lldb" }
+        ]
+    },
+    "rust": {
+        "history": [
+            {},
+            {}
+        ],
+        "debuggers": [
+            { "cmd": "rust-gdb" },
+            { "cmd": "rust-lldb" }
+        ]
     }
 }
