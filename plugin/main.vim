@@ -116,9 +116,9 @@ function! PrintUsage()
     echohl Title
     echom 'Try one of:'
     echom ' :Dbg /path/to/program'
-    "echo ' :Dbg <pid>'
-    "echo ' :Dbg <name of process>'
-    "echo ' :Dbg <ip> <port>'
+    echom ' :Dbg <pid>'
+    echom ' :Dbg <name of process>'
+    echom ' :Dbg <ip> <port>'
     echom 'Then:'
     echom ' :Dbg'
     echohl None
