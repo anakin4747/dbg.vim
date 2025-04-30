@@ -141,6 +141,21 @@ How do I set the precmds and postcmds?
 
 ## TODOs
 
+- NAMED CONFIGS?
+  - This would make the history selection part nicer
+
+- PROVIDE A MECHANISM FOR SELECTING A ACTION OR DEBUGGER IN CONFIG HISTORY
+
+:DbgHistory
+- Tabs through all the actions in the history for that filetype
+- Just selects which will be the next one, it will still need a call to :Dbg to
+  use the newly selected action, or maybe just call s:Dbg yourself
+:DbgrHistory
+- Tabs through all the debuggers in the history for that filetype
+- Just selects which will be the next one, it will still need a call to :Dbg to
+  use the newly selected debugger, or maybe just call s:Dbg yourself
+
+
 Think about default repo configs:
 ```
 have a config already made for neovim, with the gdb option
