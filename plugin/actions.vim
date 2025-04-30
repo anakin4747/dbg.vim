@@ -83,7 +83,7 @@ endf
 
 function! GetLastAction(config, filetype = &filetype) abort
     try
-        let last_action = a:config[a:filetype].history[0]
+        let last_action = a:config[a:filetype].action_history[0]
     catch
         return {}
     endtry
@@ -109,12 +109,14 @@ function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &
         let config[a:filetype] = {}
     endif
 
-    if !has_key(config[a:filetype], 'history')
-        let config[a:filetype].history = []
+    if !has_key(config[a:filetype], 'action_history')
+        let config[a:filetype].action_history = []
     endif
 
+    let history = config[a:filetype].action_history
+
     if a:action_dict.action != 'attach-pid'
-        let config[a:filetype].history = InsertNewAction(config[a:filetype].history, a:action_dict)
+        let config[a:filetype].action_history = InsertNewAction(history, a:action_dict)
     endif
 
     try
