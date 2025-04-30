@@ -11,5 +11,3 @@ line    2:
 E5555: API call: Invalid window id: 1582
 ```
 This should be cleanly handled and provide an info message of the situation.
-
-## UpdateConfig fails since mkdir is not down on no config
