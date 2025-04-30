@@ -100,9 +100,24 @@ function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &
 
     let config = GetOrInitConfig(a:config_file)
 
+    if !has_key(config, a:filetype)
+        let config[a:filetype] = {}
+    endif
+
+    if !has_key(config[a:filetype], 'history')
+        let config[a:filetype].history = []
+    endif
+
     if a:action_dict.action != 'attach-pid'
         let config[a:filetype].history = InsertNewAction(config[a:filetype].history, a:action_dict)
     endif
 
-    call writefile([json_encode(config)], a:config_file)
+    try
+        call writefile([json_encode(config)], a:config_file)
+    catch
+        call LogError($"Failed to write config: {config} to file: {a:config_file}")
+        return
+    endtry
+
+    call LogDebug($"Successfully saved config: {config}")
 endf

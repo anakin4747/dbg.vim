@@ -28,7 +28,7 @@ function! GetOrInitConfig(file = GetConfigFile()) abort
 
     call LogInfo($"No config file: creating empty config in {a:file}")
 
-    let config = #{hist: [{}]}
+    let config = {}
 
     call mkdir(fnamemodify(a:file, ":p:h"), "p")
 
