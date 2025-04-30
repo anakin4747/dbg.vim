@@ -66,7 +66,7 @@ function! s:TryAttachProc(args, cfg)
     endif
 endf
 
-function! GetAction(cfg, args = "")
+function! GetNextAction(cfg, args = "")
     if empty(a:cfg) && empty(a:args)
         return ""
     endif
