@@ -85,7 +85,7 @@ function! GetLastAction(config, filetype = &filetype) abort
     try
         let last_action = a:config[a:filetype].history[0]
     catch
-        return ""
+        return {}
     endtry
 
     return last_action
