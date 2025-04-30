@@ -98,11 +98,6 @@ endf
 
 function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &filetype)
 
-    if empty(a:filetype)
-        call LogError("No filetype set: Failed to save action to config")
-        return
-    endif
-
     let config = GetOrInitConfig(a:config_file)
 
     if !has_key(config, a:filetype)

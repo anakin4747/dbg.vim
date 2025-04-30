@@ -126,8 +126,13 @@ endf
 
 function! s:Dbg(args = "") abort
 
-    let config = GetOrInitConfig()
+    if empty(&filetype)
+        call LogWarning("No &filetype set")
+        call LogInfo("Make sure the &filetype option is properly set to the filetype you wish to debug")
+        return
+    endif
 
+    let config = GetOrInitConfig()
     call LogDebug($"config: {config}")
 
     let last_action = GetLastAction(config)
