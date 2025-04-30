@@ -142,7 +142,7 @@ function! s:Dbg(args = "") abort
         return
     endif
 
-    call UpdateConfig(action)
+    call SaveNewAction(action)
 
     if Running(g:DbgState)
         call LogInfo("Restarting debugging session")

@@ -5,21 +5,3 @@ function TestGetConfigFile()
     let actual = GetConfigFile("https://github.com/anakin4747/dbg.vim")
     call assert_equal(expected, actual)
 endf
-
-" You could mock the functions in GetConfig to be able to insert mock json and
-" file permissions. mock json to handle bad json gracefully
-
-" TODO: write update config logic
-"
-" This will be easy to write tests for
-" hopefully
-
-" Given a specific config file we will need to read and write to this file the
-" config
-" We will also need to add the list to the running config
-
-"function TestUpdateConfig()
-"
-"    call UpdateConfig(config_file, action_dict)
-"endf
-
