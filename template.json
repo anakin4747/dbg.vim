@@ -12,8 +12,7 @@
             "history": [
                 {
                     "action": "launch",
-                    "program_path": "/bin/bash",
-                    "program_args": [ "-c", "ls" ]
+                    "program_path": "a.out"
                 },
                 {
                     "action": "launch",
@@ -21,31 +20,14 @@
                     "program_args": [ "-c", "ps" ]
                 }
             ],
-            "debuggers": [
+            "debuggers (this is a list of the previous debugger configs)": [
                 {
-                    "precmd": "# Check if executable has debug symbols?",
+                    "precmd (optional)": "# Check if executable has debug symbols? Maybe not here, in code is better",
                     "cmd": "gdb",
-                    "args": "",
-                    "postcmd": ""
+                    "args (optional)": "",
+                    "postcmd (optional)": ""
                 },
-                {
-                    "precmd": "",
-                    "cmd": "lldb",
-                    "args": "",
-                    "postcmd": ""
-                },
-                {
-                    "precmd": "",
-                    "cmd": "lldb-mi",
-                    "args": "",
-                    "postcmd": ""
-                },
-                {
-                    "precmd": "",
-                    "cmd": "lldb-dap",
-                    "args": "",
-                    "postcmd": ""
-                }
+                { "cmd": "lldb" }
             ]
         },
         "rust": {
@@ -54,18 +36,8 @@
                 {}
             ],
             "debuggers": [
-                {
-                    "precmd": "",
-                    "cmd": "rust-gdb",
-                    "args": "",
-                    "postcmd": ""
-                },
-                {
-                    "precmd": "",
-                    "cmd": "rust-lldb",
-                    "args": "",
-                    "postcmd": ""
-                }
+                { "cmd": "rust-gdb" },
+                { "cmd": "rust-lldb" }
             ]
         }
     }

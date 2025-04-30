@@ -36,15 +36,7 @@ different languages.
 - [ ] Config git history auto generated
 - [ ] Selecting new debug settings from history
 
-# Debuggers to support
-
-- [ ] gdb (MI)
-- [ ] gdb (DAP)
-- [ ] lldb (MI)
-- [ ] lldb (DAP)
-- [ ] trepan3k
-
-## jdsk
+# Notes
 
 Assume you have a C and rust codebase which also has python scripts. You want
 to be able to debug C and rust both with gdb and lldb, you also want to be able
@@ -120,6 +112,31 @@ Pulling info off the buffer
 Unique debuggers
 
 
+- Debugger sessions for each filetype so that you can be debugging two
+  different languages at the same time
 
+
+- Add a way to provide better in vim docs for each debugger
+
+- Be able to highlight a portion of code to pass to debugger to loop around on
+  and automatically set a break point and start debugging at it.
+
+
+## UX for Kernel Development
+
+The kernel has source code of several languages.
+
+I want to be able to save debug information for C, C++, ASM, Rust, Python,
+Bash, Awk, and Perl.
+
+How do I set the precmds and postcmds?
+
+:compiler integration?
+
+- Breakpoints listed in quickfix list to take advantage of :cn, :cc, :cp,
+  :clist, etc
+  :Cbreak
+- Breakpoints for the current file can use locationlists
+  :Lbreak
 
 <!-- vim: set spell : -->
