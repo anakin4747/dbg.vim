@@ -137,7 +137,7 @@ function! s:Dbg(args = "") abort
     call LogDebug($"action: {action}")
 
     if empty(action)
-        call LogWarning($"unable to perform any action")
+        call LogWarning($"Unable to perform any action for filetype: {&filetype}")
         call PrintUsage()
         return
     endif
