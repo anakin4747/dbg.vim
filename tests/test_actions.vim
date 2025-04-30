@@ -150,3 +150,27 @@ function TestProgArgBeatsConfig()
     let actual = GetAction(#{program_path: "/usr/bin/zsh"}, "/bin/bash")
     call assert_equal(expected, actual)
 endfunction
+
+function TestInsertNewAction()
+    let expected = [#{action: "launch", program_path: "/bin/bash"}]
+    let actual = InsertNewAction([], #{action: "launch", program_path: "/bin/bash"})
+    call assert_equal(expected, actual)
+endf
+
+function TestMoveDuplicateActionToFront()
+    let action_hist = [
+        \ #{action: "launch", program_path: "/bin/bash"},
+        \ #{action: "launch", program_path: "/bin/bash", program_args: ["-c", "ls"]},
+        \ #{action: "attach-pid", pid: 31892},
+        \]
+    let new_action = #{action: "attach-pid", pid: 31892}
+    let expected = [
+        \ #{action: "attach-pid", pid: 31892},
+        \ #{action: "launch", program_path: "/bin/bash"},
+        \ #{action: "launch", program_path: "/bin/bash", program_args: ["-c", "ls"]},
+        \]
+
+    let actual = InsertNewAction(action_hist, new_action)
+    call assert_equal(expected, actual)
+endf
+

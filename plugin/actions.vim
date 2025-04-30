@@ -80,3 +80,29 @@ function! GetAction(cfg, args = "")
         endif
     endfor
 endf
+
+function! GetLastAction(config, filetype = &filetype) abort
+    try
+        let last_action = a:config[a:filetype].history[0]
+    catch
+        return ""
+    endtry
+
+    return last_action
+endf
+
+function! InsertNewAction(history, action_dict)
+    let history = a:history->filter('v:val != a:action_dict')
+    return history->insert(a:action_dict)
+endf
+
+function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &filetype)
+
+    let config = GetOrInitConfig(a:config_file)
+
+    if a:action_dict.action != 'attach-pid'
+        let config[a:filetype].history = InsertNewAction(config[a:filetype].history, a:action_dict)
+    endif
+
+    call writefile([json_encode(config)], a:config_file)
+endf

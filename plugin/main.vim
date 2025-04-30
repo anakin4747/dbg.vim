@@ -130,7 +130,7 @@ function! s:Dbg(args = "") abort
 
     call LogDebug($"config: {config}")
 
-    let last_action = config.hist[0]
+    let last_action = GetLastAction(config)
     call LogDebug($"last_action: {last_action}")
 
     " Determine which action to take based on config and args
