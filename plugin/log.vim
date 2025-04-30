@@ -33,7 +33,7 @@ endf
 
 function! LogWarning(msg)
     echohl WarningMsg
-    echom $"{s:repo}: warning: {GetCallingFunc()}: {a:msg}"
+    echom $"{s:repo}: warning: {a:msg}"
     echohl None
 endf
 
