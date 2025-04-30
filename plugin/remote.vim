@@ -19,9 +19,15 @@ function! GetRemote(file = expand("%")) abort
     call LogDebug($"dirname: {dirname}")
 
     try
-        return $"git -C {dirname} remote -v"->system()->split()[1]
+        let remote = $"git -C {dirname} remote -v"->system()->split()[1]
     catch
         call LogError("Failed to get remote")
         return ""
     endtry
+
+    if remote != "not"
+        return remote
+    endif
+
+    return ""
 endf

@@ -36,3 +36,10 @@ function TestGetRemoteTmpInput()
                 \ "Fails when not in dbg.vim root dir")
 endf
 
+function TestGetRemoteOutsideGitRepoFails()
+    cd
+    let actual = GetRemote('/tmp/file')
+    cd -
+
+    call assert_equal("", actual)
+endf
