@@ -157,7 +157,7 @@ function! s:Dbg(args = "") abort
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
     call LogDebug($"cmd: {cmd}")
     if empty(cmd)
-        call LogError($"Failed to build debgger command: {action} {g:default_gdb_args}")
+        call LogError($"Failed to build debugger command: {action} {g:default_gdb_args}")
         return
     endif
 
