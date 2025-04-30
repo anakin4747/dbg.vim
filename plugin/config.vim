@@ -1,17 +1,18 @@
-function! CleanConfig()
 
-    let config_file = GetConfigFile()
+function! CleanConfig(config_file = GetConfigFile())
 
-    if !filereadable(config_file)
+    if !filereadable(a:config_file)
         call LogInfo("No config file")
         return
     endif
 
     try
-        call delete(config_file)
+        call delete(a:config_file)
     catch
-        call LogWarning("Failed to delete config")
+        call LogWarning($"Failed to delete config file {a:config_file}")
+        return
     endtry
+    call LogDebug($"Deleted config file {a:config_file}")
 endf
 
 function! GetOrInitConfig(file = GetConfigFile()) abort
