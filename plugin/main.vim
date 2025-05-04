@@ -102,7 +102,7 @@ function! Running(state)
 endf
 
 " TODO: smarter tab completion
-command! -nargs=* -complete=file Dbg call s:Dbg("<args>")
+command! -nargs=* -complete=file Dbg call Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call CleanConfig()
 command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
@@ -137,7 +137,7 @@ function! PrintFiletypeUsage()
     echohl None
 endf
 
-function! s:Dbg(args = "") abort
+function! Dbg(args = "") abort
 
     if empty(&filetype)
         call PrintFiletypeUsage()
