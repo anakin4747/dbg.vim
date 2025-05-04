@@ -12,7 +12,9 @@
 " TODO: smarter tab completion
 command! -nargs=* -complete=file Dbg call Dbg("<args>")
 command! -nargs=0 DbgStop call dbg#mi#stop(g:DbgState)
+" TODO: needs filetype check
 command! -nargs=0 DbgCleanConfig call CleanConfig()
+" TODO: needs filetype check
 command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
 command! -nargs=0 DbgLogToggle call dbg#log#toggle()
 command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
