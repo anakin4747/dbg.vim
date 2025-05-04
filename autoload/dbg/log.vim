@@ -1,12 +1,12 @@
 
 let s:repo = "dbg.vim"
 
-if !exists('s:DbgLogging')
-    let s:DbgLogging = v:false
+if !exists('s:hould_log')
+    let s:hould_log = v:false
 endif
 
 function! dbg#log#toggle()
-    let s:DbgLogging = !s:DbgLogging
+    let s:hould_log = !s:hould_log
 endf
 
 function! dbg#log#callingFunc(sfile = expand('<sfile>')) abort
@@ -16,7 +16,7 @@ function! dbg#log#callingFunc(sfile = expand('<sfile>')) abort
 endf
 
 function! dbg#log#debug(msg)
-    if !s:DbgLogging
+    if !s:hould_log
         return
     endif
 
