@@ -35,6 +35,12 @@ function! dbg#mi#start(cmd, InitJob = 'InitJob')
         return state
     endif
 
+    let new_mi_ui_cmd = $"server new-ui mi {state.comm.pty}\r"
+    call chansend(state.dbger.job, new_mi_ui_cmd)
+
+    let set_tty = $"server set inferior-tty {state.dbgee.pty}\r"
+    call chansend(state.dbger.job, set_tty)
+
     return state
 endf
 

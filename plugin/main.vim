@@ -72,9 +72,4 @@ function! Dbg(args = "") abort
 
     let g:DbgState = dbg#mi#start(cmd)
 
-    let new_mi_ui_cmd = $"server new-ui mi {g:DbgState.comm.pty}\r"
-    call chansend(g:DbgState.dbger.job, new_mi_ui_cmd)
-
-    let set_tty = $"server set inferior-tty {g:DbgState.dbgee.pty}\r"
-    call chansend(g:DbgState.dbger.job, set_tty)
 endf
