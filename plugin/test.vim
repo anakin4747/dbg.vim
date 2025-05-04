@@ -24,6 +24,8 @@ function! DbgRunTests()
     let v:errors = []
     let v:errmsg = ""
 
+    let test_errors = {}
+
     let passcount = 0
     let failcount = 0
 
@@ -31,35 +33,41 @@ function! DbgRunTests()
         execute $"silent call {test}()"
 
         if !empty(v:errors)
-            echohl WarningMsg
-            echomsg $"FAIL: {test}: {v:errors}"
-            echohl None
-            let v:errors = []
+
+            let test_errors[test] = v:errors
             let failcount += 1
         elseif !empty(v:errmsg)
             " For if an error is thrown
-            echohl WarningMsg
-            echomsg $"FAIL: {test}: {v:errmsg}"
-            echohl None
-            let v:errmsg = ""
+            let test_errors[test] = v:errmsg
             let failcount += 1
         else
-            "echohl Title
-            "echomsg $"PASS: {test}"
-            "echohl None
             let passcount += 1
         endif
+
+        let v:errors = []
+        let v:errmsg = ""
     endfor
 
-    if failcount != 0
+
+    if failcount
         echohl WarningMsg
-        echomsg $"{failcount} TESTS FAILED"
+        for [test, errs] in items(test_errors)
+            echom $"FAIL: {test}:"
+            for err in errs
+                let match = matchlist(err, '\(line \d\+\): \(.*\)')
+                echom $"  {match[1]}"
+                echom $"    {match[2]}"
+            endfor
+            echom ""
+        endfor
+
+        echom $"{failcount} TESTS FAILED"
         echohl None
     endif
 
-    if passcount != 0
+    if passcount
         echohl Title
-        echomsg $"{passcount} TESTS PASSED"
+        echom $"{passcount} TESTS PASSED"
         echohl None
     endif
 
