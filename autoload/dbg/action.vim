@@ -68,7 +68,7 @@ function! s:TryAttachProc(args, cfg)
     endif
 endf
 
-function! GetNextAction(cfg, args = "")
+function! dbg#action#next(cfg, args = "")
     if empty(a:cfg) && empty(a:args)
         return ""
     endif
@@ -83,7 +83,7 @@ function! GetNextAction(cfg, args = "")
     endfor
 endf
 
-function! GetLastAction(config, filetype = &filetype) abort
+function! dbg#action#last(config, filetype = &filetype) abort
     try
         let last_action = a:config[a:filetype].action_history[0]
     catch
@@ -93,12 +93,12 @@ function! GetLastAction(config, filetype = &filetype) abort
     return last_action
 endf
 
-function! InsertNewAction(history, action_dict)
+function! dbg#action#insert(history, action_dict)
     let history = a:history->filter('v:val != a:action_dict')
     return history->insert(a:action_dict)
 endf
 
-function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &filetype)
+function! dbg#action#save(action_dict, config_file = GetConfigFile(), filetype = &filetype)
 
     let config = GetOrInitConfig(a:config_file)
 
@@ -113,7 +113,7 @@ function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &
     let history = config[a:filetype].action_history
 
     if a:action_dict.action != 'attach-pid'
-        let config[a:filetype].action_history = InsertNewAction(history, a:action_dict)
+        let config[a:filetype].action_history = dbg#action#insert(history, a:action_dict)
     endif
 
     try

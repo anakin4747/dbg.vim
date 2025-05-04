@@ -44,10 +44,10 @@ function! Dbg(args = "") abort
     let config = GetOrInitConfig(GetConfigFile(remote))
     call dbg#log#debug($"config: {config}")
 
-    let last_action = GetLastAction(config)
+    let last_action = dbg#action#last(config)
     call dbg#log#debug($"last_action: {last_action}")
 
-    let action = GetNextAction(last_action, a:args)
+    let action = dbg#action#next(last_action, a:args)
     call dbg#log#debug($"action: {action}")
 
     if empty(action)
@@ -56,7 +56,7 @@ function! Dbg(args = "") abort
         return
     endif
 
-    call SaveNewAction(action)
+    call dbg#action#save(action)
 
     if dbg#mi#running(g:DbgState)
         call dbg#log#info("restarting debugging session")
