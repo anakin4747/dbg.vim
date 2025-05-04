@@ -3,7 +3,6 @@ function! GetRemote(file = expand("%")) abort
     call LogDebug($"a:file: {a:file}")
 
     if type(a:file) != v:t_string
-        call LogError("GetRemote() expects a string")
         return ""
     endif
 
@@ -21,7 +20,6 @@ function! GetRemote(file = expand("%")) abort
     try
         let remote = $"git -C {dirname} remote -v"->system()->split()[1]
     catch
-        call LogError("failed to get remote")
         return ""
     endtry
 

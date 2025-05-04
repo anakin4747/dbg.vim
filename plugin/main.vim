@@ -144,7 +144,14 @@ function! Dbg(args = "") abort
         return
     endif
 
-    let config = GetOrInitConfig()
+    let remote = GetRemote()
+    if empty(remote)
+        call LogWarning("failed to get remote")
+        call LogInfo("make sure you are in a git repo")
+        return
+    endif
+
+    let config = GetOrInitConfig(GetConfigFile(remote))
     call LogDebug($"config: {config}")
 
     let last_action = GetLastAction(config)

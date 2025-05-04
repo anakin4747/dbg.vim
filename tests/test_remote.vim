@@ -11,22 +11,26 @@ function TestGetRemoteTerm()
 
     new | terminal
 
-    let actual = GetRemote(expand("%"))
-    call assert_equal(expected, actual,
-                \ "Fails when not in dbg.vim root dir")
-    bwipeout!
+    try
+        let actual = GetRemote(expand("%"))
+        call assert_equal(expected, actual,
+                    \ "Fails when not in dbg.vim root dir")
+    catch
+    finally
+        bwipeout!
+    endtry
 endf
 
-function TestGetRemoteHandlesBadArgs()
-    let expected = ""
-    let actual = GetRemote({})
-    call assert_equal(expected, actual)
+function TestGetRemoteHandlesDict()
+    call assert_equal("", GetRemote({}))
+endf
 
-    let actual = GetRemote(0)
-    call assert_equal(expected, actual)
+function TestGetRemoteHandlesNumber()
+    call assert_equal("", GetRemote(0))
+endf
 
-    let actual = GetRemote([])
-    call assert_equal(expected, actual)
+function TestGetRemoteHandlesList()
+    call assert_equal("", GetRemote([]))
 endf
 
 function TestGetRemoteTmpInput()
@@ -38,8 +42,7 @@ endf
 
 function TestGetRemoteOutsideGitRepoFails()
     cd
-    let actual = GetRemote('/tmp/file')
+    call assert_equal("", GetRemote('/tmp/file'))
     cd -
 
-    call assert_equal("", actual)
 endf
