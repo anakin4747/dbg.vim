@@ -48,7 +48,7 @@ function! InitJob(cmd, opts, jobstart = 'jobstart')
 
     let job = call(a:jobstart, [a:cmd, a:opts])
     if job <= 0
-        call LogError('failed to open the program terminal window')
+        call dbg#log#error('failed to open the program terminal window')
         if exists('win')
             execute $"silent! bwipeout! {nvim_win_get_buf(job_dict['win'])}"
         endif

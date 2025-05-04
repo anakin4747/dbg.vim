@@ -117,9 +117,9 @@ function! SaveNewAction(action_dict, config_file = GetConfigFile(), filetype = &
     try
         call writefile([json_encode(config)], a:config_file)
     catch
-        call LogError($"failed to write config: {config} to file: {a:config_file}")
+        call dbg#log#error($"failed to write config: {config} to file: {a:config_file}")
         return
     endtry
 
-    call LogDebug($"successfully saved config: {config}")
+    call dbg#log#debug($"successfully saved config: {config}")
 endf

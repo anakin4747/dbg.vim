@@ -25,27 +25,21 @@ function! StartDebugger(cmd, InitJob = 'InitJob')
     let state.dbgee = call(a:InitJob, [dummy_process,
                 \ #{term: v:true, location: 'tab'}])
     if empty(state.dbgee) || !state.dbgee->has_key("pty")
-        echohl WarningMsg
-        echom "Failed to init job for debuggee"
-        echohl None
+        call dbg#log#warning("Failed to init job for debuggee")
         return state
     endif
 
     let state.comm = call(a:InitJob, [dummy_process,
                 \ #{pty: v:true, on_stdout: function('HandleCommStdout')}])
     if empty(state.comm) || !state.comm->has_key("pty")
-        echohl WarningMsg
-        echom "Failed to init job for debugger communication"
-        echohl None
+        call dbg#log#warning("Failed to init job for debugger communication")
         call DeinitJob(state.dbgee)
         return state
     endif
 
     let state.dbger = call(a:InitJob, [a:cmd, #{term: v:true, location: 'tab'}])
     if empty(state.dbger) || !state.dbgee->has_key("pty")
-        echohl WarningMsg
-        echom "Failed to init job for debugger"
-        echohl None
+        call dbg#log#warning("Failed to init job for debugger")
         call DeinitJob(state.dbgee)
         call DeinitJob(state.comm)
         return state
@@ -106,7 +100,7 @@ command! -nargs=* -complete=file Dbg call Dbg("<args>")
 command! -nargs=0 DbgStop call StopDebugger(g:DbgState)
 command! -nargs=0 DbgCleanConfig call CleanConfig()
 command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
-command! -nargs=0 DbgLogToggle call ToggleDbgLogging()
+command! -nargs=0 DbgLogToggle call dbg#log#toggle()
 command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
 
 function! GetDebuggers(_, __, ___)
@@ -120,43 +114,43 @@ endif
 function! Dbg(args = "") abort
 
     if empty(&filetype)
-        call PrintFiletypeUsage()
+        call dbg#log#filetypeUsage()
         return
     endif
 
     let remote = GetRemote()
     if empty(remote)
-        call LogWarning("failed to get remote")
-        call LogInfo("make sure you are in a git repo")
+        call dbg#log#warning("failed to get remote")
+        call dbg#log#info("make sure you are in a git repo")
         return
     endif
 
     let config = GetOrInitConfig(GetConfigFile(remote))
-    call LogDebug($"config: {config}")
+    call dbg#log#debug($"config: {config}")
 
     let last_action = GetLastAction(config)
-    call LogDebug($"last_action: {last_action}")
+    call dbg#log#debug($"last_action: {last_action}")
 
     let action = GetNextAction(last_action, a:args)
-    call LogDebug($"action: {action}")
+    call dbg#log#debug($"action: {action}")
 
     if empty(action)
-        call LogWarning($"unable to perform any action for filetype: {&filetype}")
-        call PrintUsage()
+        call dbg#log#warning($"unable to perform any action for filetype: {&filetype}")
+        call dbg#log#usage()
         return
     endif
 
     call SaveNewAction(action)
 
     if Running(g:DbgState)
-        call LogInfo("restarting debugging session")
+        call dbg#log#info("restarting debugging session")
         call StopDebugger(g:DbgState)
     endif
 
     let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
-    call LogDebug($"cmd: {cmd}")
+    call dbg#log#debug($"cmd: {cmd}")
     if empty(cmd)
-        call LogError($"failed to build debugger command: {action} {g:default_gdb_args}")
+        call dbg#log#error($"failed to build debugger command: {action} {g:default_gdb_args}")
         return
     endif
 

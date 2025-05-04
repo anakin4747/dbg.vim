@@ -7,17 +7,17 @@ endf
 function! CleanConfig(config_file = GetConfigFile())
 
     if !filereadable(a:config_file)
-        call LogInfo("no config file")
+        call dbg#log#info("no config file")
         return
     endif
 
     try
         call delete(a:config_file)
     catch
-        call LogWarning($"failed to delete config file {a:config_file}")
+        call dbg#log#warning($"failed to delete config file {a:config_file}")
         return
     endtry
-    call LogDebug($"deleted config file {a:config_file}")
+    call dbg#log#debug($"deleted config file {a:config_file}")
 endf
 
 function! GetOrInitConfig(file = GetConfigFile()) abort
@@ -26,7 +26,7 @@ function! GetOrInitConfig(file = GetConfigFile()) abort
         return a:file->readfile()->json_decode()
     endif
 
-    call LogInfo($"no config file: creating empty config in {a:file}")
+    call dbg#log#info($"no config file: creating empty config in {a:file}")
 
     let config = {}
 

@@ -1,6 +1,6 @@
 " Given the current file, get the remote of that repo
 function! GetRemote(file = expand("%")) abort
-    call LogDebug($"a:file: {a:file}")
+    call dbg#log#debug($"a:file: {a:file}")
 
     if type(a:file) != v:t_string
         return ""
@@ -15,7 +15,7 @@ function! GetRemote(file = expand("%")) abort
         let dirname = fnamemodify(a:file, ":p:h")
     endif
 
-    call LogDebug($"dirname: {dirname}")
+    call dbg#log#debug($"dirname: {dirname}")
 
     try
         let remote = $"git -C {dirname} remote -v"->system()->split()[1]
