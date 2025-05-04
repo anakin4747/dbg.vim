@@ -117,26 +117,6 @@ if !exists("g:DbgState")
     let g:DbgState = {}
 endif
 
-function! PrintUsage()
-    echohl Title
-    echom 'Try one of:'
-    echom ' :Dbg /path/to/program'
-    echom ' :Dbg <pid>'
-    echom ' :Dbg <name of process>'
-    echom ' :Dbg <ip> <port>'
-    echom 'Then:'
-    echom ' :Dbg'
-    echohl None
-endf
-
-function! PrintFiletypeUsage()
-    call LogWarning("no &filetype set")
-    call LogInfo("make sure the &filetype option is properly set to the filetype you wish to debug")
-    echohl Title
-    echom "To read the filetype option try: ':set filetype?' or ':echo &filetype'"
-    echohl None
-endf
-
 function! Dbg(args = "") abort
 
     if empty(&filetype)
