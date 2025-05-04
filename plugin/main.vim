@@ -129,11 +129,18 @@ function! PrintUsage()
     echohl None
 endf
 
+function! PrintFiletypeUsage()
+    call LogWarning("no &filetype set")
+    call LogInfo("make sure the &filetype option is properly set to the filetype you wish to debug")
+    echohl Title
+    echom "To read the filetype option try: ':set filetype?' or ':echo &filetype'"
+    echohl None
+endf
+
 function! s:Dbg(args = "") abort
 
     if empty(&filetype)
-        call LogWarning("no &filetype set")
-        call LogInfo("make sure the &filetype option is properly set to the filetype you wish to debug")
+        call PrintFiletypeUsage()
         return
     endif
 
