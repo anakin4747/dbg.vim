@@ -8,6 +8,8 @@ function! s:TryLaunch(args, cfg)
     let prog = get(a:args, 0, get(a:cfg, "program_path", ""))
 
     " Cannot use executable() since it searches $PATH
+    " TODO: change this to just check for file presence since not every
+    " language will be debugging an executable (interpreted languages)
     if getfperm(prog) !~ '..x......'
         return
     endif
