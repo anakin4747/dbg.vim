@@ -63,7 +63,7 @@ function! Dbg(args = "") abort
         call dbg#mi#stop(g:DbgState)
     endif
 
-    let cmd = BuildDebuggerCmd(action, "gdb", g:default_gdb_args)
+    let cmd = dbg#cmd#build(action, "gdb", g:default_gdb_args)
     call dbg#log#debug($"cmd: {cmd}")
     if empty(cmd)
         call dbg#log#error($"failed to build debugger command: {action} {g:default_gdb_args}")

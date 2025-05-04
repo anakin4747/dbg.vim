@@ -7,7 +7,7 @@ let default_gdb_args .= " -iex 'set print pretty on'"
 " https://sourceware.org/gdb/current/onlinedocs/gdb.html/Asynchronous-and-non_002dstop-modes.html
 let default_gdb_args .= " -iex 'set mi-async on'"
 
-function! BuildDebuggerCmd(action_dict, command, args)
+function! dbg#cmd#build(action_dict, command, args)
     if empty(a:action_dict)
         return ""
     endif
