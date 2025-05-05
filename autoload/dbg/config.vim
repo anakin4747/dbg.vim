@@ -6,6 +6,10 @@ endf
 
 function! dbg#config#clean(config_file = dbg#config#file())
 
+    if !dbg#util#debuggable()
+        return
+    endif
+
     if !filereadable(a:config_file)
         call dbg#log#info("no config file")
         return
@@ -21,6 +25,10 @@ function! dbg#config#clean(config_file = dbg#config#file())
 endf
 
 function! dbg#config#get(file = dbg#config#file()) abort
+
+    if !dbg#util#debuggable()
+        return
+    endif
 
     if filereadable(a:file)
         return a:file->readfile()->json_decode()

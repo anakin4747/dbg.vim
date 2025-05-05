@@ -40,15 +40,7 @@ endif
 
 function! Dbg(args = "") abort
 
-    if empty(&filetype)
-        call dbg#log#filetypeUsage()
-        return
-    endif
-
-    let remote = dbg#remote#get()
-    if empty(remote)
-        call dbg#log#warning("failed to get remote")
-        call dbg#log#info("make sure you are in a git repo")
+    if !dbg#util#debuggable()
         return
     endif
 
