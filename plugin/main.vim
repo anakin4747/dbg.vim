@@ -15,7 +15,7 @@ command! -nargs=0 DbgStop call dbg#mi#stop(g:DbgState)
 " TODO: needs filetype check
 command! -nargs=0 DbgCleanConfig call dbg#config#clean()
 " TODO: needs filetype check
-command! -nargs=0 DbgShowConfig echom dbg#config#get()
+command! -nargs=0 DbgShowConfig call dbg#config#show()
 command! -nargs=0 DbgLogToggle call dbg#log#toggle()
 command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
 

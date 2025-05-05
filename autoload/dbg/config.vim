@@ -24,6 +24,13 @@ function! dbg#config#clean(config_file = dbg#config#file())
     call dbg#log#debug($"deleted config file {a:config_file}")
 endf
 
+function! dbg#config#show()
+    let config = dbg#config#get()
+    if type(config) == type({})
+        call dbg#log#good($"config: {config}")
+    endif
+endf
+
 function! dbg#config#get(file = dbg#config#file()) abort
 
     if !dbg#util#debuggable()
