@@ -1,8 +1,0 @@
-{
-    "c": [ "gdb", "lldb", "lldb-mi", "lldb-dap" ],
-    "cpp": [ "gdb", "lldb", "lldb-mi", "lldb-dap" ],
-    "rust": [ "rust-gdb", "rust-lldb", "gdb", "lldb", "lldb-mi", "lldb-dap" ],
-    "python": [ "debugpy" ],
-    "go": [ "dlv" ]
-}
-

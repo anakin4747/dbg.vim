@@ -271,4 +271,61 @@ E5555: API call: Invalid window id: 1582
 ```
 This should be cleanly handled and provide an info message of the situation.
 
+# Default debuggers
+```json
+{
+    "c": [ "gdb", "lldb", "lldb-mi", "lldb-dap" ],
+    "cpp": [ "gdb", "lldb", "lldb-mi", "lldb-dap" ],
+    "rust": [ "rust-gdb", "rust-lldb", "gdb", "lldb", "lldb-mi", "lldb-dap" ],
+    "python": [ "debugpy" ],
+    "go": [ "dlv" ]
+}
+```
+
+# Brainstorm config
+```json
+{
+    "layout": {
+        "debugger": "tab | vert | horizontal/normal (You will probably need to be able to provide a way to specify corners, maybe widths but that may be too far)",
+        "debuggee": "tab | vert | horizontal/normal",
+        "source": "tab | vert | horizontal/normal",
+        "variables (optional: Not shown if not present)": "tab | vert | horizontal/normal",
+        "stack traces (optional: Not shown if not present)": "tab | vert | horizontal/normal",
+        "etc (optional: Not shown if not present)": "tab | vert | horizontal/normal"
+    },
+    "c": {
+        "history": [
+            {
+                "action": "launch",
+                "program_path": "a.out"
+            },
+            {
+                "action": "launch",
+                "program_path": "/bin/sh",
+                "program_args": [ "-c", "ps" ]
+            }
+        ],
+        "debuggers (this is a list of the previous debugger configs)": [
+            {
+                "precmd (optional)": "# Check if executable has debug symbols? Maybe not here, in code is better",
+                "cmd": "gdb",
+                "args (optional)": "",
+                "postcmd (optional)": ""
+            },
+            { "cmd": "lldb" }
+        ]
+    },
+    "rust": {
+        "history": [
+            {},
+            {}
+        ],
+        "debuggers": [
+            { "cmd": "rust-gdb" },
+            { "cmd": "rust-lldb" }
+        ]
+    }
+}
+```
+
 <!-- vim: set spell : -->
