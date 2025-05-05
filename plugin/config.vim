@@ -1,5 +1,5 @@
 
-function! GetConfigFile(remote = GetRemote())
+function! GetConfigFile(remote = dbg#remote#get())
     let sha = sha256(a:remote)
     return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
 endf

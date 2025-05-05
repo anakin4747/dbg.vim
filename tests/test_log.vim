@@ -1,7 +1,7 @@
 
 function TestGetCallingFunc()
-    let sfile = "<SNR>46_Dbg[2]..GetRemote[1]..dbg#log#debug"
-    let expected = "GetRemote[1]"
+    let sfile = "<SNR>46_Dbg[2]..dbg#remote#get[1]..dbg#log#debug"
+    let expected = "dbg#remote#get[1]"
     call assert_equal(expected, dbg#log#callingFunc(sfile))
 endf
 

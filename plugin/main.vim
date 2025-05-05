@@ -43,7 +43,7 @@ function! Dbg(args = "") abort
         return
     endif
 
-    let remote = GetRemote()
+    let remote = dbg#remote#get()
     if empty(remote)
         call dbg#log#warning("failed to get remote")
         call dbg#log#info("make sure you are in a git repo")
