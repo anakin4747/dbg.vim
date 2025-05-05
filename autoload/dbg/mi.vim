@@ -7,19 +7,19 @@ endf
 
 " TODO: The state should be injected so that the location configuration can be
 " injected
-function! dbg#mi#start(cmd, InitJob = 'InitJob')
+function! dbg#mi#start(cmd, job_init = 'dbg#job#init')
     let state = {}
 
     let dummy_process = 'tail -f /dev/null'
 
-    let state.dbgee = call(a:InitJob, [dummy_process,
+    let state.dbgee = call(a:job_init, [dummy_process,
                 \ #{term: v:true, location: 'tab'}])
     if empty(state.dbgee) || !state.dbgee->has_key("pty")
         call dbg#log#warning("Failed to init job for debuggee")
         return state
     endif
 
-    let state.comm = call(a:InitJob, [dummy_process,
+    let state.comm = call(a:job_init, [dummy_process,
                 \ #{pty: v:true, on_stdout: function('dbg#mi#handleCommOutput')}])
     if empty(state.comm) || !state.comm->has_key("pty")
         call dbg#log#warning("Failed to init job for debugger communication")
@@ -27,7 +27,7 @@ function! dbg#mi#start(cmd, InitJob = 'InitJob')
         return state
     endif
 
-    let state.dbger = call(a:InitJob, [a:cmd, #{term: v:true, location: 'tab'}])
+    let state.dbger = call(a:job_init, [a:cmd, #{term: v:true, location: 'tab'}])
     if empty(state.dbger) || !state.dbgee->has_key("pty")
         call dbg#log#warning("Failed to init job for debugger")
         call DeinitJob(state.dbgee)

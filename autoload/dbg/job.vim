@@ -1,5 +1,5 @@
 
-function! CreateWindow(location = '')
+function! s:CreateWindow(location = '')
     let initial = win_getid()
 
     if a:location == 'tab'
@@ -33,7 +33,7 @@ endf
 
 " On success returns a dict with required info
 " On failure returns empty dict
-function! InitJob(cmd, opts, jobstart = 'jobstart')
+function! dbg#job#init(cmd, opts, jobstart = 'jobstart')
 
     let job_dict = {}
 
@@ -41,7 +41,7 @@ function! InitJob(cmd, opts, jobstart = 'jobstart')
 
     if has_key(a:opts, 'term') && a:opts.term
         let win_loc = get(a:opts, 'location', '')
-        let win = CreateWindow(win_loc)
+        let win = s:CreateWindow(win_loc)
         call nvim_set_current_win(win)
         call extend(job_dict, #{win: win})
     endif
