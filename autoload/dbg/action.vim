@@ -98,9 +98,9 @@ function! dbg#action#insert(history, action_dict)
     return history->insert(a:action_dict)
 endf
 
-function! dbg#action#save(action_dict, config_file = GetConfigFile(), filetype = &filetype)
+function! dbg#action#save(action_dict, config_file = dbg#config#file(), filetype = &filetype)
 
-    let config = GetOrInitConfig(a:config_file)
+    let config = dbg#config#get(a:config_file)
 
     if !has_key(config, a:filetype)
         let config[a:filetype] = {}

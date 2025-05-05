@@ -13,9 +13,9 @@
 command! -nargs=* -complete=file Dbg call Dbg("<args>")
 command! -nargs=0 DbgStop call dbg#mi#stop(g:DbgState)
 " TODO: needs filetype check
-command! -nargs=0 DbgCleanConfig call CleanConfig()
+command! -nargs=0 DbgCleanConfig call dbg#config#clean()
 " TODO: needs filetype check
-command! -nargs=0 DbgShowConfig echom GetOrInitConfig()
+command! -nargs=0 DbgShowConfig echom dbg#config#get()
 command! -nargs=0 DbgLogToggle call dbg#log#toggle()
 command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
 
@@ -50,7 +50,7 @@ function! Dbg(args = "") abort
         return
     endif
 
-    let config = GetOrInitConfig(GetConfigFile(remote))
+    let config = dbg#config#get(dbg#config#file(remote))
     call dbg#log#debug($"config: {config}")
 
     let last_action = dbg#action#last(config)

@@ -1,10 +1,10 @@
 
-function! GetConfigFile(remote = dbg#remote#get())
+function! dbg#config#file(remote = dbg#remote#get())
     let sha = sha256(a:remote)
     return $"{stdpath("data")}/dbg.vim/{sha[0:1]}/{sha[2:]}"
 endf
 
-function! CleanConfig(config_file = GetConfigFile())
+function! dbg#config#clean(config_file = dbg#config#file())
 
     if !filereadable(a:config_file)
         call dbg#log#info("no config file")
@@ -20,7 +20,7 @@ function! CleanConfig(config_file = GetConfigFile())
     call dbg#log#debug($"deleted config file {a:config_file}")
 endf
 
-function! GetOrInitConfig(file = GetConfigFile()) abort
+function! dbg#config#get(file = dbg#config#file()) abort
 
     if filereadable(a:file)
         return a:file->readfile()->json_decode()
