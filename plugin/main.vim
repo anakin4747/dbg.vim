@@ -19,6 +19,8 @@ command! -nargs=0 DbgShowConfig echom dbg#config#get()
 command! -nargs=0 DbgLogToggle call dbg#log#toggle()
 command! -nargs=* -complete=customlist,GetDebuggers Dbgr call Dbger("<args>")
 
+command! DbgRunTests call dbg#test#runAll()
+
 function! GetDebuggers(_, __, ___)
     return [ "rust-gdb", "rust-lldb", "gdb", "lldb", "lldb-mi", "lldb-dap" ]
 endf

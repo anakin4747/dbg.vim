@@ -11,9 +11,7 @@ function! s:DeleteOldTests()
     endfor
 endfunction
 
-command! DbgRunTests call DbgRunTests()
-
-function! DbgRunTests()
+function! dbg#test#runAll()
 
     call s:DeleteOldTests()
 
