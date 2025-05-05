@@ -1,11 +1,3 @@
-" No prompts or messages
-let default_gdb_args = "-quiet"
-" Print it all out so I can page with vim
-let default_gdb_args .= " -iex 'set pagination off'"
-" Pretty printing is pretty important for folding
-let default_gdb_args .= " -iex 'set print pretty on'"
-" https://sourceware.org/gdb/current/onlinedocs/gdb.html/Asynchronous-and-non_002dstop-modes.html
-let default_gdb_args .= " -iex 'set mi-async on'"
 
 function! dbg#cmd#build(action_dict, command, args)
     if empty(a:action_dict)
